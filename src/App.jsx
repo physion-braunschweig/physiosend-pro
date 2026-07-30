@@ -712,7 +712,7 @@ export default function App() {
                       <button
                         onClick={sendPlanEmail}
                         disabled={emailSendStatus === "sending"}
-                        className="ps-btn-ink ps-press w-full text-white rounded-full py-3 font-medium text-sm flex items-center justify-center gap-2 mt-3"
+                        className="ps-btn-ink ps-press w-full py-3 font-medium text-sm flex items-center justify-center gap-2 mt-3"
                       >
                         <Mail size={16} />
                         {emailSendStatus === "sending" ? "Wird gesendet…" : "Per E-Mail an Patient senden"}

@@ -43,8 +43,7 @@ export async function handler(event) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        from: fromAddress,
-        to: [to],
+from: `${practiceName || "Physion Braunschweig"} <${fromAddress}>`,        to: [to],
         subject,
         html,
       }),

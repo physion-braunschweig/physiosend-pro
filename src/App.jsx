@@ -44,31 +44,10 @@ function catInfo(key) {
 }
 
 const EXERCISE_POOL = [
-  { id: "hws-1", category: "HWS", name: "Nacken-Seitneigung", instruction: "Ohr langsam Richtung Schulter führen, bis eine sanfte Dehnung spürbar ist. Seite wechseln.", seconds: 30, why: "Löst Verspannungen der seitlichen Nackenmuskulatur und verbessert die Beweglichkeit der Halswirbelsäule. Regelmäßig ausgeführt wirkt sie außerdem vorbeugend gegen einseitige Fehlhaltungen im Alltag." },
-  { id: "hws-2", category: "HWS", name: "Kinn-Einziehen (Chin Tuck)", instruction: "Kinn gerade nach hinten schieben, als würdest du ein Doppelkinn machen. Kurz halten, lösen.", seconds: 25, why: "Kräftigt die tiefe Nackenmuskulatur, verbessert die Kopfhaltung und entlastet die Halswirbelsäule. Besonders bei viel Bildschirmarbeit hilft sie, die typische Vorhalte des Kopfes auszugleichen." },
-  { id: "bws-1", category: "BWS", name: "Brustwirbelsäulen-Rotation im Sitzen", instruction: "Aufrecht sitzen, Arme vor der Brust verschränkt, Oberkörper langsam zur Seite drehen.", seconds: 30, why: "Mobilisiert die Rotation der Brustwirbelsäule, die im Alltag durch Sitzen oft steif wird. Eine bewegliche BWS entlastet gleichzeitig Schultern und untere Wirbelsäule bei Drehbewegungen." },
-  { id: "bws-2", category: "BWS", name: "Katze-Kuh", instruction: "Im Vierfüßlerstand Rücken abwechselnd runden und in ein Hohlkreuz bringen.", seconds: 35, why: "Fördert die segmentale Beweglichkeit der gesamten Wirbelsäule und lockert die Rückenmuskulatur. Der fließende Wechsel zwischen Rundung und Streckung verbessert zudem die Körperwahrnehmung." },
   { id: "bws-3", category: "BWS", name: "Mobilisierung BWS aus Seitlage", instruction: "Anleitung folgt – bitte in der Auswahl ergänzen.", seconds: 120, why: "Individuelle Übung, von dir per Video hinterlegt.", videoUrl: "https://player.mediadelivery.net/play/718490/164d658b-d053-44cd-ade8-357898ef1bb9" },
-  { id: "lws-1", category: "LWS", name: "Beckenkippung in Rückenlage", instruction: "Knie aufgestellt, unteren Rücken sanft in den Boden drücken und wieder lösen.", seconds: 30, why: "Schult die Wahrnehmung der Lendenwirbelsäule und aktiviert die tiefe Bauchmuskulatur. Diese Grundübung ist die Basis für viele weiterführende Stabilisationsübungen im unteren Rücken." },
-  { id: "lws-2", category: "LWS", name: "Rumpfrotation im Liegen", instruction: "Knie aufgestellt, langsam zu einer Seite absinken lassen, Schultern bleiben am Boden.", seconds: 30, why: "Mobilisiert die Lendenwirbelsäule sanft in der Rotation, ohne sie zu überlasten. So bleibt die Beweglichkeit erhalten, während die Bandscheiben nur schonend belastet werden." },
-  { id: "lws-3", category: "LWS", name: "Rumpfstabilisation im Vierfüßlerstand", instruction: "Gegengleich Arm und Bein anheben, Rücken bleibt gerade. Position kurz halten, dann Seite wechseln.", seconds: 40, why: "Trainiert die Stabilität der Wirbelsäule unter Belastung von Armen und Beinen. Das verbessert die Koordination zwischen Rumpf und Extremitäten und schützt den Rücken im Alltag." },
-  { id: "lws-4", category: "LWS", name: "Atmung & Zwerchfell (ZOA-Restoration)", instruction: "90/90 Rückenlage. Vollständig ausatmen, Rippen sinken lateral & posterior ab — kein Rippenflare.", seconds: 240, why: "Löst Verspannungen im Zwerchfell und verbessert die Grundspannung des Rumpfes. Eine funktionierende Atmung ist die Voraussetzung dafür, dass tiefer liegende Muskeln den Rücken effektiv stützen können." },
   { id: "lws-5", category: "LWS", name: "Cat-Camel (BWS-Fokus)", instruction: "Bewegung bewusst aus der Brustwirbelsäule holen, nicht aus der LWS.", seconds: 180, why: "Mobilisiert gezielt die Brustwirbelsäule, damit die Lendenwirbelsäule entlastet wird. Steifheit in der BWS führt sonst häufig zu ausgleichender Überbeweglichkeit im unteren Rücken.", videoUrl: "https://player.mediadelivery.net/play/718490/d32464a3-83f4-45f1-bd1b-0f8cb3c32230" },
-  { id: "lws-6", category: "LWS", name: "Sitzende BWS-Rotation", instruction: "Becken bleibt fixiert, Drehung kommt aus dem Brustkorb.", seconds: 120, why: "Verbessert die Rotationsfähigkeit der BWS, damit die LWS weniger kompensieren muss. Das ist besonders bei Alltagsbewegungen wie Autofahren oder Sitzen am Schreibtisch relevant." },
-  { id: "lws-7", category: "LWS", name: "Hüftbeuger-Dehnung (Kniender Ausfallschritt)", instruction: "Becken leicht unterkippen, Dehnung vorne in der Hüfte spüren — nicht im unteren Rücken.", seconds: 180, why: "Dehnt den Hüftbeuger, dessen Verkürzung häufig zu Beschwerden im unteren Rücken führt. Durch langes Sitzen verkürzt dieser Muskel besonders schnell und zieht das Becken in eine ungünstige Stellung." },
-  { id: "lws-8", category: "LWS", name: "Dead Bug (TVA + Atem-Integration)", instruction: "Ausatmung genau in der Bewegungsspitze. LWS bleibt neutral, kein Hohlkreuz.", seconds: 180, why: "Kräftigt die tiefe Bauchmuskulatur bei gleichzeitig neutraler, geschützter Lendenwirbelsäule. Diese Übung überträgt sich direkt auf Alltagsbewegungen, bei denen Rumpf und Gliedmaßen gegenläufig arbeiten." },
-  { id: "lws-9", category: "LWS", name: "Bird-Dog (Segmentkontrolle)", instruction: "Kurze Pause in der Endposition. Becken bleibt ruhig, kein Ausweichen.", seconds: 180, why: "Verbessert die Kontrolle über einzelne Wirbelsäulensegmente unter Bewegung. Die kurze Halteposition trainiert zusätzlich die Ausdauer der tiefen Rückenmuskulatur." },
-  { id: "lws-10", category: "LWS", name: "Hip Hinge im Stand (mit Stock)", instruction: "Bewegung aus der Hüfte, LWS bleibt neutral — nicht am Endpunkt zusätzlich lordosieren.", seconds: 300, why: "Trainiert ein rückenschonendes Bewegungsmuster fürs Bücken und Heben im Alltag. Der Stock dient dabei als Feedback, damit die Bewegung wirklich aus der Hüfte statt aus dem Rücken kommt." },
-  { id: "lws-11", category: "LWS", name: "Pallof Press (Anti-Rotation)", instruction: "Rumpf widersteht der Zugkraft — keine Rotation in der LWS zulassen.", seconds: 240, why: "Kräftigt die Rumpfmuskulatur gegen Rotation und schützt so die Lendenwirbelsäule. Das ist besonders wichtig für Bewegungen, bei denen der Oberkörper stabil bleiben muss, während sich Arme oder Beine bewegen." },
-  { id: "lws-12", category: "LWS", name: "Ausklang (Atmung zurücksetzen)", instruction: "Ruhige 360°-Atmung im Liegen. Nachspüren, kein Aktivieren mehr.", seconds: 180, why: "Beruhigt das Nervensystem und lässt die aktivierte Muskulatur wieder herunterfahren. Ein bewusster Ausklang verbessert die Regeneration nach dem Training und sollte nicht übersprungen werden." },
   { id: "schulter-1", category: "Schulter", name: "Schulter 4 Fuß Kräftigung", instruction: "Anleitung folgt – bitte in der Auswahl ergänzen.", seconds: 120, why: "Individuelle Übung, von dir per Video hinterlegt.", videoUrl: "https://player.mediadelivery.net/play/718490/5e64e41b-6a1b-4cb5-b633-f12a8fe9f4b5" },
   { id: "schulter-2", category: "Schulter", name: "Kapseldehnung", instruction: "Anleitung folgt – bitte in der Auswahl ergänzen.", seconds: 120, why: "Individuelle Übung, von dir per Video hinterlegt.", videoUrl: "https://player.mediadelivery.net/play/718490/6fd15320-6e74-48e1-91a6-2d8938eeb9f5" },
-  { id: "huefte-1", category: "Hüfte", name: "Hüftbeuger-Dehnung im Ausfallschritt", instruction: "Großer Ausfallschritt, Becken leicht nach vorne schieben, Oberkörper aufrecht halten.", seconds: 30, why: "Dehnt den Hüftbeuger und verbessert die Streckfähigkeit der Hüfte. Eine gute Hüftstreckung ist Voraussetzung für ein ökonomisches Gangbild und entlastet den unteren Rücken." },
-  { id: "huefte-2", category: "Hüfte", name: "Muschelübung mit Band", instruction: "Seitlage, Knie gebeugt, Band über den Oberschenkeln. Oberes Knie kontrolliert nach oben öffnen.", seconds: 35, why: "Kräftigt die seitliche Gesäßmuskulatur, die das Becken beim Gehen stabilisiert. Eine Schwäche dieser Muskulatur zeigt sich häufig als Einknicken des Knies oder Absinken des Beckens." },
-  { id: "knie-1", category: "Knie", name: "Wandsitz", instruction: "Rücken an der Wand, Knie im 90°-Winkel, Position ruhig halten.", seconds: 30, why: "Kräftigt die Oberschenkelmuskulatur isometrisch und entlastet dabei das Kniegelenk. Die statische Haltearbeit eignet sich besonders gut, wenn dynamische Bewegungen noch schmerzhaft sind." },
-  { id: "knie-2", category: "Knie", name: "Knieextension im Sitzen", instruction: "Im Sitzen ein Bein langsam strecken, kurz halten, kontrolliert absenken.", seconds: 30, why: "Aktiviert gezielt den Quadrizeps, der das Kniegelenk stabilisiert und führt. Eine kräftige Oberschenkelmuskulatur schützt das Knie zusätzlich bei Alltagsbelastungen wie Treppensteigen." },
-  { id: "fuss-1", category: "Fuß", name: "Wadendehnung am Treppenabsatz", instruction: "Ferse über die Kante absenken, bis eine Dehnung spürbar ist. Ruhig weiteratmen.", seconds: 25, why: "Dehnt die Wadenmuskulatur, die die Beweglichkeit im Sprunggelenk oft einschränkt. Eine verkürzte Wade wirkt sich negativ auf das gesamte Gangbild bis hin zu Knie und Hüfte aus." },
-  { id: "fuss-2", category: "Fuß", name: "Zehenheben und -senken", instruction: "Im Stand die Zehen anheben, kurz halten, langsam wieder absenken.", seconds: 30, why: "Kräftigt die Fußmuskulatur und verbessert die Stabilität beim Stehen und Gehen. Ein starkes Fußgewölbe wirkt wie ein natürlicher Stoßdämpfer für die gesamte Beinachse." },
 ];
 
 const GLOBAL_STYLES = `
@@ -184,7 +163,7 @@ function VideoModal({ exerciseName, videoUrl, onClose }) {
 export default function App() {
   const [screen, setScreen] = useState("builder"); // builder | intro | exercise | done
   const [activeCategory, setActiveCategory] = useState(CATEGORIES[0].key);
-  const [selectedIds, setSelectedIds] = useState(new Set());
+  const [selectedIds, setSelectedIds] = useState([]);
   const [index, setIndex] = useState(0);
   const [running, setRunning] = useState(false);
   const [showVideo, setShowVideo] = useState(false);
@@ -222,7 +201,7 @@ export default function App() {
       try {
         const json = decodeURIComponent(escape(atob(hash.slice(1))));
         const data = JSON.parse(json);
-        if (data.selectedIds) setSelectedIds(new Set(data.selectedIds));
+        if (data.selectedIds) setSelectedIds(data.selectedIds);
         if (data.secondsOverrides) setSecondsOverrides(data.secondsOverrides);
         if (data.patientName) setPatientName(data.patientName);
         if (data.startDate) setStartDate(data.startDate);
@@ -240,10 +219,13 @@ export default function App() {
 
   const selectedExercises = useMemo(
     () =>
-      EXERCISE_POOL.filter((e) => selectedIds.has(e.id)).map((e) => ({
-        ...e,
-        seconds: secondsOverrides[e.id],
-      })),
+      selectedIds
+        .map((id) => EXERCISE_POOL.find((e) => e.id === id))
+        .filter(Boolean)
+        .map((e) => ({
+          ...e,
+          seconds: secondsOverrides[e.id],
+        })),
     [selectedIds, secondsOverrides]
   );
   const filteredPool = EXERCISE_POOL.filter((e) => e.category === activeCategory);
@@ -257,10 +239,18 @@ export default function App() {
   const isTimeFull = totalSelectedSeconds >= targetSeconds;
 
   function toggleExercise(id) {
+    setSelectedIds((prev) =>
+      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
+    );
+  }
+
+  function moveSelected(id, direction) {
     setSelectedIds((prev) => {
-      const next = new Set(prev);
-      if (next.has(id)) next.delete(id);
-      else next.add(id);
+      const index = prev.indexOf(id);
+      const newIndex = index + direction;
+      if (index === -1 || newIndex < 0 || newIndex >= prev.length) return prev;
+      const next = [...prev];
+      [next[index], next[newIndex]] = [next[newIndex], next[index]];
       return next;
     });
   }
@@ -328,7 +318,7 @@ export default function App() {
 
   function buildPlanLink() {
     const data = {
-      selectedIds: Array.from(selectedIds),
+      selectedIds,
       secondsOverrides,
       patientName,
       startDate,
@@ -370,7 +360,7 @@ export default function App() {
   }
 
   function startNewPlan() {
-    setSelectedIds(new Set());
+    setSelectedIds([]);
     setSecondsOverrides(Object.fromEntries(EXERCISE_POOL.map((e) => [e.id, 120])));
     setPatientName(PATIENT_NAME);
     setPatientEmail("");
@@ -639,16 +629,40 @@ export default function App() {
                 )}
 
                 {selectedExercises.length > 0 && (
-                  <div className="flex gap-1.5 overflow-x-auto mt-3 pb-0.5 ps-hide-scrollbar">
-                    {selectedExercises.map((e) => (
-                      <button
+                  <div className="mt-3 space-y-1.5">
+                    {selectedExercises.map((e, i) => (
+                      <div
                         key={e.id}
-                        onClick={() => toggleExercise(e.id)}
-                        className="shrink-0 flex items-center gap-1 ps-bg-page rounded-full pl-3 pr-2 py-1.5 text-xs ps-text-ink"
+                        className="flex items-center gap-2 ps-bg-page rounded-xl pl-3 pr-1.5 py-1.5"
                       >
-                        {e.name}
-                        <X size={12} className="ps-text-muted" />
-                      </button>
+                        <span className="ps-font-mono text-[11px] ps-text-muted w-4 text-center shrink-0">
+                          {i + 1}
+                        </span>
+                        <span className="flex-1 min-w-0 text-xs ps-text-ink truncate">{e.name}</span>
+                        <button
+                          onClick={() => moveSelected(e.id, -1)}
+                          disabled={i === 0}
+                          aria-label="Nach oben verschieben"
+                          className="p-1 rounded-full disabled:opacity-30"
+                        >
+                          <ChevronUp size={14} className="ps-text-muted" />
+                        </button>
+                        <button
+                          onClick={() => moveSelected(e.id, 1)}
+                          disabled={i === selectedExercises.length - 1}
+                          aria-label="Nach unten verschieben"
+                          className="p-1 rounded-full disabled:opacity-30"
+                        >
+                          <ChevronDown size={14} className="ps-text-muted" />
+                        </button>
+                        <button
+                          onClick={() => toggleExercise(e.id)}
+                          aria-label="Entfernen"
+                          className="p-1 rounded-full"
+                        >
+                          <X size={14} className="ps-text-muted" />
+                        </button>
+                      </div>
                     ))}
                   </div>
                 )}
@@ -659,7 +673,7 @@ export default function App() {
               {CATEGORIES.map((c) => {
                 const active = c.key === activeCategory;
                 const countInCat = EXERCISE_POOL.filter(
-                  (e) => e.category === c.key && selectedIds.has(e.id)
+                  (e) => e.category === c.key && selectedIds.includes(e.id)
                 ).length;
                 return (
                   <button
@@ -696,7 +710,7 @@ export default function App() {
                 {catInfo(activeCategory).full}
               </div>
               {filteredPool.map((e) => {
-                const selected = selectedIds.has(e.id);
+                const selected = selectedIds.includes(e.id);
                 const c = catInfo(e.category);
                 const secs = secondsOverrides[e.id];
                 const locked = isTimeFull && !selected;

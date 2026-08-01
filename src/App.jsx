@@ -20,6 +20,7 @@ import {
   Mail,
   Copy,
   Link2,
+  Lock,
 } from "lucide-react";
 
 const PRACTICE_NAME = "Physion Braunschweig";
@@ -187,6 +188,12 @@ export default function App() {
   const [includeSummary, setIncludeSummary] = useState(true);
   const [isPatientView, setIsPatientView] = useState(false);
   const [planLink, setPlanLink] = useState("");
+  const [isUnlocked, setIsUnlocked] = useState(
+    () => typeof window !== "undefined" && localStorage.getItem("ps_unlocked") === "true"
+  );
+  const [pwInput, setPwInput] = useState("");
+  const [pwError, setPwError] = useState(false);
+  const [pwChecking, setPwChecking] = useState(false);
   const [emailSendStatus, setEmailSendStatus] = useState(null); // null | "sending" | "sent" | "error"
   const [secondsOverrides, setSecondsOverrides] = useState(() =>
     Object.fromEntries(EXERCISE_POOL.map((e) => [e.id, 120]))
@@ -294,6 +301,29 @@ export default function App() {
     setScreen("intro");
   }
 
+  async function checkPassword() {
+    setPwChecking(true);
+    setPwError(false);
+    try {
+      const res = await fetch("/.netlify/functions/check-password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ password: pwInput }),
+      });
+      const data = await res.json();
+      if (data.ok) {
+        setIsUnlocked(true);
+        localStorage.setItem("ps_unlocked", "true");
+      } else {
+        setPwError(true);
+      }
+    } catch (err) {
+      setPwError(true);
+    } finally {
+      setPwChecking(false);
+    }
+  }
+
   function buildPlanLink() {
     const data = {
       selectedIds: Array.from(selectedIds),
@@ -367,7 +397,46 @@ export default function App() {
         <div className="pointer-events-none absolute -top-20 -right-24 w-64 h-64 rounded-full blur-3xl" style={{ backgroundColor: "rgba(45,92,86,0.1)" }} />
         <div className="pointer-events-none absolute top-1/2 -left-28 w-56 h-56 rounded-full blur-3xl" style={{ backgroundColor: "rgba(232,163,61,0.1)" }} />
 
-        {screen === "builder" && (
+        {screen === "builder" && !isPatientView && !isUnlocked && (
+          <div className="flex-1 flex flex-col items-center justify-center px-6 text-center">
+            <div className="w-14 h-14 rounded-2xl flex items-center justify-center mb-5" style={{ backgroundColor: "rgba(45,92,86,0.1)" }}>
+              <Lock size={24} className="ps-text-primary" />
+            </div>
+            <span className="text-xs tracking-wide uppercase ps-text-muted font-medium">
+              {PRACTICE_NAME}
+            </span>
+            <h1 className="ps-font-display font-semibold text-2xl ps-text-ink mt-2">
+              Therapeuten-Bereich
+            </h1>
+            <p className="text-sm ps-text-muted mt-1 mb-6">Bitte Passwort eingeben</p>
+
+            <input
+              type="password"
+              value={pwInput}
+              onChange={(e) => {
+                setPwInput(e.target.value);
+                setPwError(false);
+              }}
+              onKeyDown={(e) => e.key === "Enter" && checkPassword()}
+              placeholder="Passwort"
+              autoFocus
+              className="w-full max-w-xs bg-white border ps-border-alt ps-text-ink rounded-xl px-4 py-3 text-sm text-center focus:outline-none"
+            />
+            {pwError && (
+              <p className="text-xs ps-text-accent mt-2">Falsches Passwort. Nochmal versuchen.</p>
+            )}
+
+            <button
+              onClick={checkPassword}
+              disabled={pwChecking || !pwInput}
+              className="ps-btn-accent ps-press ps-shadow-cta mt-4 w-full max-w-xs rounded-full py-3 font-semibold text-sm"
+            >
+              {pwChecking ? "Prüfe…" : "Anmelden"}
+            </button>
+          </div>
+        )}
+
+        {screen === "builder" && (isPatientView || isUnlocked) && (
           <div className="flex-1 flex flex-col pt-10 pb-4">
             <div className="px-6">
               <span className="text-xs tracking-wide uppercase ps-text-muted font-medium">
@@ -712,7 +781,7 @@ export default function App() {
                       <button
                         onClick={sendPlanEmail}
                         disabled={emailSendStatus === "sending"}
-                        className="ps-btn-ink ps-press w-full py-3 font-medium text-sm flex items-center justify-center gap-2 mt-3"
+                        className="ps-btn-ink ps-press w-full text-white rounded-full py-3 font-medium text-sm flex items-center justify-center gap-2 mt-3"
                       >
                         <Mail size={16} />
                         {emailSendStatus === "sending" ? "Wird gesendet…" : "Per E-Mail an Patient senden"}

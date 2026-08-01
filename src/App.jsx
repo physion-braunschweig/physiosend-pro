@@ -48,11 +48,12 @@ const EXERCISE_POOL = [
   { id: "hws-2", category: "HWS", name: "Kinn-Einziehen (Chin Tuck)", instruction: "Kinn gerade nach hinten schieben, als würdest du ein Doppelkinn machen. Kurz halten, lösen.", seconds: 25, why: "Kräftigt die tiefe Nackenmuskulatur, verbessert die Kopfhaltung und entlastet die Halswirbelsäule. Besonders bei viel Bildschirmarbeit hilft sie, die typische Vorhalte des Kopfes auszugleichen." },
   { id: "bws-1", category: "BWS", name: "Brustwirbelsäulen-Rotation im Sitzen", instruction: "Aufrecht sitzen, Arme vor der Brust verschränkt, Oberkörper langsam zur Seite drehen.", seconds: 30, why: "Mobilisiert die Rotation der Brustwirbelsäule, die im Alltag durch Sitzen oft steif wird. Eine bewegliche BWS entlastet gleichzeitig Schultern und untere Wirbelsäule bei Drehbewegungen." },
   { id: "bws-2", category: "BWS", name: "Katze-Kuh", instruction: "Im Vierfüßlerstand Rücken abwechselnd runden und in ein Hohlkreuz bringen.", seconds: 35, why: "Fördert die segmentale Beweglichkeit der gesamten Wirbelsäule und lockert die Rückenmuskulatur. Der fließende Wechsel zwischen Rundung und Streckung verbessert zudem die Körperwahrnehmung." },
+  { id: "bws-3", category: "BWS", name: "Mobilisierung BWS aus Seitlage", instruction: "Anleitung folgt – bitte in der Auswahl ergänzen.", seconds: 120, why: "Individuelle Übung, von dir per Video hinterlegt.", videoUrl: "https://player.mediadelivery.net/play/718490/164d658b-d053-44cd-ade8-357898ef1bb9" },
   { id: "lws-1", category: "LWS", name: "Beckenkippung in Rückenlage", instruction: "Knie aufgestellt, unteren Rücken sanft in den Boden drücken und wieder lösen.", seconds: 30, why: "Schult die Wahrnehmung der Lendenwirbelsäule und aktiviert die tiefe Bauchmuskulatur. Diese Grundübung ist die Basis für viele weiterführende Stabilisationsübungen im unteren Rücken." },
   { id: "lws-2", category: "LWS", name: "Rumpfrotation im Liegen", instruction: "Knie aufgestellt, langsam zu einer Seite absinken lassen, Schultern bleiben am Boden.", seconds: 30, why: "Mobilisiert die Lendenwirbelsäule sanft in der Rotation, ohne sie zu überlasten. So bleibt die Beweglichkeit erhalten, während die Bandscheiben nur schonend belastet werden." },
   { id: "lws-3", category: "LWS", name: "Rumpfstabilisation im Vierfüßlerstand", instruction: "Gegengleich Arm und Bein anheben, Rücken bleibt gerade. Position kurz halten, dann Seite wechseln.", seconds: 40, why: "Trainiert die Stabilität der Wirbelsäule unter Belastung von Armen und Beinen. Das verbessert die Koordination zwischen Rumpf und Extremitäten und schützt den Rücken im Alltag." },
   { id: "lws-4", category: "LWS", name: "Atmung & Zwerchfell (ZOA-Restoration)", instruction: "90/90 Rückenlage. Vollständig ausatmen, Rippen sinken lateral & posterior ab — kein Rippenflare.", seconds: 240, why: "Löst Verspannungen im Zwerchfell und verbessert die Grundspannung des Rumpfes. Eine funktionierende Atmung ist die Voraussetzung dafür, dass tiefer liegende Muskeln den Rücken effektiv stützen können." },
-  { id: "lws-5", category: "LWS", name: "Cat-Camel (BWS-Fokus)", instruction: "Bewegung bewusst aus der Brustwirbelsäule holen, nicht aus der LWS.", seconds: 180, why: "Mobilisiert gezielt die Brustwirbelsäule, damit die Lendenwirbelsäule entlastet wird. Steifheit in der BWS führt sonst häufig zu ausgleichender Überbeweglichkeit im unteren Rücken." },
+  { id: "lws-5", category: "LWS", name: "Cat-Camel (BWS-Fokus)", instruction: "Bewegung bewusst aus der Brustwirbelsäule holen, nicht aus der LWS.", seconds: 180, why: "Mobilisiert gezielt die Brustwirbelsäule, damit die Lendenwirbelsäule entlastet wird. Steifheit in der BWS führt sonst häufig zu ausgleichender Überbeweglichkeit im unteren Rücken.", videoUrl: "https://player.mediadelivery.net/play/718490/d32464a3-83f4-45f1-bd1b-0f8cb3c32230" },
   { id: "lws-6", category: "LWS", name: "Sitzende BWS-Rotation", instruction: "Becken bleibt fixiert, Drehung kommt aus dem Brustkorb.", seconds: 120, why: "Verbessert die Rotationsfähigkeit der BWS, damit die LWS weniger kompensieren muss. Das ist besonders bei Alltagsbewegungen wie Autofahren oder Sitzen am Schreibtisch relevant." },
   { id: "lws-7", category: "LWS", name: "Hüftbeuger-Dehnung (Kniender Ausfallschritt)", instruction: "Becken leicht unterkippen, Dehnung vorne in der Hüfte spüren — nicht im unteren Rücken.", seconds: 180, why: "Dehnt den Hüftbeuger, dessen Verkürzung häufig zu Beschwerden im unteren Rücken führt. Durch langes Sitzen verkürzt dieser Muskel besonders schnell und zieht das Becken in eine ungünstige Stellung." },
   { id: "lws-8", category: "LWS", name: "Dead Bug (TVA + Atem-Integration)", instruction: "Ausatmung genau in der Bewegungsspitze. LWS bleibt neutral, kein Hohlkreuz.", seconds: 180, why: "Kräftigt die tiefe Bauchmuskulatur bei gleichzeitig neutraler, geschützter Lendenwirbelsäule. Diese Übung überträgt sich direkt auf Alltagsbewegungen, bei denen Rumpf und Gliedmaßen gegenläufig arbeiten." },
@@ -60,8 +61,8 @@ const EXERCISE_POOL = [
   { id: "lws-10", category: "LWS", name: "Hip Hinge im Stand (mit Stock)", instruction: "Bewegung aus der Hüfte, LWS bleibt neutral — nicht am Endpunkt zusätzlich lordosieren.", seconds: 300, why: "Trainiert ein rückenschonendes Bewegungsmuster fürs Bücken und Heben im Alltag. Der Stock dient dabei als Feedback, damit die Bewegung wirklich aus der Hüfte statt aus dem Rücken kommt." },
   { id: "lws-11", category: "LWS", name: "Pallof Press (Anti-Rotation)", instruction: "Rumpf widersteht der Zugkraft — keine Rotation in der LWS zulassen.", seconds: 240, why: "Kräftigt die Rumpfmuskulatur gegen Rotation und schützt so die Lendenwirbelsäule. Das ist besonders wichtig für Bewegungen, bei denen der Oberkörper stabil bleiben muss, während sich Arme oder Beine bewegen." },
   { id: "lws-12", category: "LWS", name: "Ausklang (Atmung zurücksetzen)", instruction: "Ruhige 360°-Atmung im Liegen. Nachspüren, kein Aktivieren mehr.", seconds: 180, why: "Beruhigt das Nervensystem und lässt die aktivierte Muskulatur wieder herunterfahren. Ein bewusster Ausklang verbessert die Regeneration nach dem Training und sollte nicht übersprungen werden." },
-  { id: "schulter-1", category: "Schulter", name: "Wandengel", instruction: "Rücken flach an die Wand, Arme in W-Position anlegen. Langsam nach oben gleiten.", seconds: 30, why: "Verbessert die Beweglichkeit und Haltung der Schulterblätter, geführt an der Wand. Die Wand gibt dabei eine klare Rückmeldung, ob die Bewegung sauber und ohne Ausweichen ausgeführt wird." },
-  { id: "schulter-2", category: "Schulter", name: "Schulterkreisen mit Band", instruction: "Band schulterbreit greifen, Arme gestreckt vor dem Körper. Kleine Kreise nach hinten ziehen.", seconds: 30, why: "Kräftigt die schulterumgebende Muskulatur und stabilisiert das Schultergelenk. Der Widerstand des Bands sorgt für eine kontrollierte, gleichmäßige Belastung der Rotatorenmanschette." },
+  { id: "schulter-1", category: "Schulter", name: "Schulter 4 Fuß Kräftigung", instruction: "Anleitung folgt – bitte in der Auswahl ergänzen.", seconds: 120, why: "Individuelle Übung, von dir per Video hinterlegt.", videoUrl: "https://player.mediadelivery.net/play/718490/5e64e41b-6a1b-4cb5-b633-f12a8fe9f4b5" },
+  { id: "schulter-2", category: "Schulter", name: "Kapseldehnung", instruction: "Anleitung folgt – bitte in der Auswahl ergänzen.", seconds: 120, why: "Individuelle Übung, von dir per Video hinterlegt.", videoUrl: "https://player.mediadelivery.net/play/718490/6fd15320-6e74-48e1-91a6-2d8938eeb9f5" },
   { id: "huefte-1", category: "Hüfte", name: "Hüftbeuger-Dehnung im Ausfallschritt", instruction: "Großer Ausfallschritt, Becken leicht nach vorne schieben, Oberkörper aufrecht halten.", seconds: 30, why: "Dehnt den Hüftbeuger und verbessert die Streckfähigkeit der Hüfte. Eine gute Hüftstreckung ist Voraussetzung für ein ökonomisches Gangbild und entlastet den unteren Rücken." },
   { id: "huefte-2", category: "Hüfte", name: "Muschelübung mit Band", instruction: "Seitlage, Knie gebeugt, Band über den Oberschenkeln. Oberes Knie kontrolliert nach oben öffnen.", seconds: 35, why: "Kräftigt die seitliche Gesäßmuskulatur, die das Becken beim Gehen stabilisiert. Eine Schwäche dieser Muskulatur zeigt sich häufig als Einknicken des Knies oder Absinken des Beckens." },
   { id: "knie-1", category: "Knie", name: "Wandsitz", instruction: "Rücken an der Wand, Knie im 90°-Winkel, Position ruhig halten.", seconds: 30, why: "Kräftigt die Oberschenkelmuskulatur isometrisch und entlastet dabei das Kniegelenk. Die statische Haltearbeit eignet sich besonders gut, wenn dynamische Bewegungen noch schmerzhaft sind." },
@@ -142,7 +143,7 @@ function TimerRing({ total, secondsLeft }) {
   );
 }
 
-function VideoModal({ exerciseName, onClose }) {
+function VideoModal({ exerciseName, videoUrl, onClose }) {
   return (
     <div
       className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-6"
@@ -155,10 +156,23 @@ function VideoModal({ exerciseName, onClose }) {
             <X size={20} />
           </button>
         </div>
-        <div className="aspect-video ps-bg-ink flex flex-col items-center justify-center gap-2" style={{ color: "#F2F4F1" }}>
-          <PlayCircle size={52} strokeWidth={1.3} />
-          <span className="text-sm" style={{ color: "rgba(242,244,241,0.7)" }}>Demo-Video · {exerciseName}</span>
-        </div>
+        {videoUrl ? (
+          <div className="aspect-video ps-bg-ink">
+            <iframe
+              src={videoUrl}
+              loading="lazy"
+              allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture"
+              allowFullScreen
+              style={{ width: "100%", height: "100%", border: "none" }}
+              title={exerciseName}
+            />
+          </div>
+        ) : (
+          <div className="aspect-video ps-bg-ink flex flex-col items-center justify-center gap-2" style={{ color: "#F2F4F1" }}>
+            <PlayCircle size={52} strokeWidth={1.3} />
+            <span className="text-sm" style={{ color: "rgba(242,244,241,0.7)" }}>Demo-Video · {exerciseName}</span>
+          </div>
+        )}
         <div className="px-5 py-4 text-sm ps-text-muted">
           Schau dir die Ausführung in Ruhe an und kehre danach zur Übung zurück.
         </div>
@@ -267,30 +281,16 @@ export default function App() {
     setIsGeneratingSummary(true);
     setSummaryError(null);
     try {
-      const response = await fetch("https://api.anthropic.com/v1/messages", {
+      const response = await fetch("/.netlify/functions/generate-summary", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          model: "claude-sonnet-4-6",
-          max_tokens: 1000,
-          messages: [
-            {
-              role: "user",
-              content:
-                "Du bist Physiotherapeut und schreibst für einen Patienten eine kurze Zusammenfassung seines Befundes (2-3 Sätze, deutsch). Ton: sachlich-formell, professionell, wie in einem seriösen Arztbrief oder Befundschreiben. Leicht verständlich, ohne übertriebenen Fachjargon. Positiv und zuversichtlich formulieren, aber zurückhaltend — keine überschwängliche oder werbliche Sprache. Nutze ausschließlich die folgenden Stichpunkte des Therapeuten und erfinde nichts hinzu:\n\n" +
-                notes +
-                "\n\nAntworte NUR mit dem Fließtext der Zusammenfassung, ohne Anführungszeichen und ohne Einleitung.",
-            },
-          ],
-        }),
+        body: JSON.stringify({ notes }),
       });
       const data = await response.json();
-      const text = (data.content || [])
-        .filter((b) => b.type === "text")
-        .map((b) => b.text)
-        .join("\n")
-        .trim();
-      setSummary(text || "Zusammenfassung konnte nicht erstellt werden.");
+      if (!response.ok || !data.summary) {
+        throw new Error(data.error || "Zusammenfassung fehlgeschlagen");
+      }
+      setSummary(data.summary);
     } catch (err) {
       setSummaryError("Zusammenfassung konnte nicht erstellt werden. Bitte erneut versuchen.");
     } finally {
@@ -914,10 +914,23 @@ export default function App() {
                         <p className="text-[13px] leading-relaxed mb-3" style={{ color: "rgba(28,43,41,0.85)" }}>
                           {e.instruction}
                         </p>
-                        <div className="aspect-video w-full rounded-xl overflow-hidden flex flex-col items-center justify-center gap-2" style={{ backgroundColor: "#1C2B29", color: "#F2F4F1" }}>
-                          <PlayCircle size={40} strokeWidth={1.3} />
-                          <span className="text-xs" style={{ color: "rgba(242,244,241,0.7)" }}>Demo-Video · {e.name}</span>
-                        </div>
+                        {e.videoUrl ? (
+                          <div className="aspect-video w-full rounded-xl overflow-hidden" style={{ backgroundColor: "#1C2B29" }}>
+                            <iframe
+                              src={e.videoUrl}
+                              loading="lazy"
+                              allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture"
+                              allowFullScreen
+                              style={{ width: "100%", height: "100%", border: "none" }}
+                              title={e.name}
+                            />
+                          </div>
+                        ) : (
+                          <div className="aspect-video w-full rounded-xl overflow-hidden flex flex-col items-center justify-center gap-2" style={{ backgroundColor: "#1C2B29", color: "#F2F4F1" }}>
+                            <PlayCircle size={40} strokeWidth={1.3} />
+                            <span className="text-xs" style={{ color: "rgba(242,244,241,0.7)" }}>Demo-Video · {e.name}</span>
+                          </div>
+                        )}
                       </div>
                     )}
                   </div>
@@ -1074,7 +1087,7 @@ export default function App() {
           </div>
         )}
 
-        {showVideo && <VideoModal exerciseName={exercise?.name ?? ""} onClose={() => setShowVideo(false)} />}
+        {showVideo && <VideoModal exerciseName={exercise?.name ?? ""} videoUrl={exercise?.videoUrl} onClose={() => setShowVideo(false)} />}
       </div>
     </div>
   );

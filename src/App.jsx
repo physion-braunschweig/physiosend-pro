@@ -267,30 +267,16 @@ export default function App() {
     setIsGeneratingSummary(true);
     setSummaryError(null);
     try {
-      const response = await fetch("https://api.anthropic.com/v1/messages", {
+      const response = await fetch("/.netlify/functions/generate-summary", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          model: "claude-sonnet-4-6",
-          max_tokens: 1000,
-          messages: [
-            {
-              role: "user",
-              content:
-                "Du bist Physiotherapeut und schreibst für einen Patienten eine kurze Zusammenfassung seines Befundes (2-3 Sätze, deutsch). Ton: sachlich-formell, professionell, wie in einem seriösen Arztbrief oder Befundschreiben. Leicht verständlich, ohne übertriebenen Fachjargon. Positiv und zuversichtlich formulieren, aber zurückhaltend — keine überschwängliche oder werbliche Sprache. Nutze ausschließlich die folgenden Stichpunkte des Therapeuten und erfinde nichts hinzu:\n\n" +
-                notes +
-                "\n\nAntworte NUR mit dem Fließtext der Zusammenfassung, ohne Anführungszeichen und ohne Einleitung.",
-            },
-          ],
-        }),
+        body: JSON.stringify({ notes }),
       });
       const data = await response.json();
-      const text = (data.content || [])
-        .filter((b) => b.type === "text")
-        .map((b) => b.text)
-        .join("\n")
-        .trim();
-      setSummary(text || "Zusammenfassung konnte nicht erstellt werden.");
+      if (!response.ok || !data.summary) {
+        throw new Error(data.error || "Zusammenfassung fehlgeschlagen");
+      }
+      setSummary(data.summary);
     } catch (err) {
       setSummaryError("Zusammenfassung konnte nicht erstellt werden. Bitte erneut versuchen.");
     } finally {

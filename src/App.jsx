@@ -21,6 +21,8 @@ import {
   Copy,
   Link2,
   Lock,
+  LogOut,
+  Plus,
 } from "lucide-react";
 
 const PRACTICE_NAME = "Physion Braunschweig";
@@ -361,9 +363,32 @@ export default function App() {
       });
       if (!res.ok) throw new Error("Versand fehlgeschlagen");
       setEmailSendStatus("sent");
+      setScreen("sent");
     } catch (err) {
       setEmailSendStatus("error");
     }
+  }
+
+  function startNewPlan() {
+    setSelectedIds(new Set());
+    setSecondsOverrides(Object.fromEntries(EXERCISE_POOL.map((e) => [e.id, 120])));
+    setPatientName(PATIENT_NAME);
+    setPatientEmail("");
+    setBefundNotes(
+      "1. Wirbelsäule: \n2. Hüfte/Knie: \n3. Schulter: "
+    );
+    setSummary("");
+    setSummaryError(null);
+    setPlanLink("");
+    setEmailSendStatus(null);
+    setActiveCategory(CATEGORIES[0].key);
+    setScreen("builder");
+  }
+
+  function logout() {
+    localStorage.removeItem("ps_unlocked");
+    setIsUnlocked(false);
+    startNewPlan();
   }
 
   function startPlan() {
@@ -519,9 +544,10 @@ export default function App() {
                       {!isGeneratingSummary && (
                         <button
                           onClick={() => generateSummary(befundNotes)}
-                          className="text-[11px] ps-text-primary underline underline-offset-2"
+                          className="text-[11px] underline underline-offset-2"
+                          style={summaryError ? { color: "#E8A33D" } : {}}
                         >
-                          {summary ? "Neu erstellen" : "Erstellen"}
+                          {summaryError ? "Fehler, klick hier" : summary ? "Neu erstellen" : "Erstellen"}
                         </button>
                       )}
                     </div>
@@ -530,10 +556,6 @@ export default function App() {
                         <div className="h-3 ps-bg-alt rounded-full w-full" />
                         <div className="h-3 ps-bg-alt rounded-full w-11/12" />
                         <div className="h-3 ps-bg-alt rounded-full w-3/4" />
-                      </div>
-                    ) : summaryError ? (
-                      <div>
-                        <p className="text-sm ps-text-accent">{summaryError}</p>
                       </div>
                     ) : summary ? (
                       <p className="text-sm leading-relaxed" style={{ color: "rgba(28,43,41,0.9)" }}>
@@ -781,7 +803,8 @@ export default function App() {
                       <button
                         onClick={sendPlanEmail}
                         disabled={emailSendStatus === "sending"}
-                        className="ps-btn-ink ps-press w-full text-white rounded-full py-3 font-medium text-sm flex items-center justify-center gap-2 mt-3"
+                        className="ps-press w-full rounded-full py-3 font-medium text-sm flex items-center justify-center gap-2 mt-3"
+                        style={{ backgroundColor: "#1C2B29", color: "#fff" }}
                       >
                         <Mail size={16} />
                         {emailSendStatus === "sending" ? "Wird gesendet…" : "Per E-Mail an Patient senden"}
@@ -1000,6 +1023,34 @@ export default function App() {
             >
               {index + 1 < selectedExercises.length ? "Weiter zur nächsten Übung" : "Plan abschließen"}
               <ArrowRight size={18} />
+            </button>
+          </div>
+        )}
+
+        {screen === "sent" && (
+          <div className="flex-1 flex flex-col items-center justify-center px-6 text-center">
+            <div className="relative flex items-center justify-center">
+              <div className="absolute w-40 h-40 rounded-full" style={{ backgroundColor: "rgba(45,92,86,0.05)" }} />
+              <div className="absolute w-28 h-28 rounded-full" style={{ backgroundColor: "rgba(45,92,86,0.08)" }} />
+              <CheckCircle2 size={56} className="relative ps-text-primary" strokeWidth={1.4} />
+            </div>
+            <h2 className="ps-font-display font-semibold text-2xl ps-text-ink mt-4">Alles verschickt!</h2>
+            <p className="text-[15px] ps-text-muted mt-2 max-w-xs">
+              Der Übungsplan wurde an {patientName || "den Patienten"} gesendet.
+            </p>
+
+            <button
+              onClick={startNewPlan}
+              className="ps-btn-accent ps-press ps-shadow-cta mt-8 w-full max-w-xs rounded-full py-3.5 font-semibold text-sm flex items-center justify-center gap-2"
+            >
+              <Plus size={18} /> Neuen Trainingsplan erstellen
+            </button>
+
+            <button
+              onClick={logout}
+              className="mt-4 flex items-center gap-2 ps-text-muted font-medium text-sm"
+            >
+              <LogOut size={16} /> Ausloggen
             </button>
           </div>
         )}

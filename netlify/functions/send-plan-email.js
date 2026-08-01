@@ -31,7 +31,7 @@ export async function handler(event) {
             Übungsplan öffnen
           </a>
         </p>
-        <p style="font-size:13px;color:#5B6B67;">Falls der Button nicht funktioniert, kopiere diesen Link in deinen Browser:<br/>${planUrl}</p>
+        <p style="font-size:13px;color:#5B6B67;">Falls der Button nicht funktioniert: <a href="${planUrl}" style="color:#2D5C56;">Übungsplan öffnen</a></p>
         <p>Viele Grüße<br/>${practiceName || "Deine Praxis"}</p>
       </div>
     `;

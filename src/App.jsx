@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useMemo } from "react";
+import { useState, useEffect, useRef, useMemo, useCallback } from "react";
 import {
   Play,
   Pause,
@@ -44,10 +44,10 @@ function catInfo(key) {
 }
 
 const EXERCISE_POOL = [
-  { id: "bws-3", category: "BWS", name: "Mobilisierung BWS aus Seitlage", instruction: "Anleitung folgt – bitte in der Auswahl ergänzen.", seconds: 120, why: "Individuelle Übung, von dir per Video hinterlegt.", videoUrl: "https://player.mediadelivery.net/play/718490/164d658b-d053-44cd-ade8-357898ef1bb9" },
-  { id: "lws-5", category: "LWS", name: "Cat-Camel (BWS-Fokus)", instruction: "Bewegung bewusst aus der Brustwirbelsäule holen, nicht aus der LWS.", seconds: 180, why: "Mobilisiert gezielt die Brustwirbelsäule, damit die Lendenwirbelsäule entlastet wird. Steifheit in der BWS führt sonst häufig zu ausgleichender Überbeweglichkeit im unteren Rücken.", videoUrl: "https://player.mediadelivery.net/play/718490/d32464a3-83f4-45f1-bd1b-0f8cb3c32230" },
-  { id: "schulter-1", category: "Schulter", name: "Schulter 4 Fuß Kräftigung", instruction: "Anleitung folgt – bitte in der Auswahl ergänzen.", seconds: 120, why: "Individuelle Übung, von dir per Video hinterlegt.", videoUrl: "https://player.mediadelivery.net/play/718490/5e64e41b-6a1b-4cb5-b633-f12a8fe9f4b5" },
-  { id: "schulter-2", category: "Schulter", name: "Kapseldehnung", instruction: "Anleitung folgt – bitte in der Auswahl ergänzen.", seconds: 120, why: "Individuelle Übung, von dir per Video hinterlegt.", videoUrl: "https://player.mediadelivery.net/play/718490/6fd15320-6e74-48e1-91a6-2d8938eeb9f5" },
+  { id: "bws-3", category: "BWS", name: "Mobilisierung BWS aus Seitlage", instruction: "Mobilisation der Brustwirbelsäule und Rippen aus der Seitlage.", seconds: 120, why: "Verbessert die Beweglichkeit von BWS und Rippengelenken – wichtig für eine freie Atmung und eine ungehinderte Rotation des Oberkörpers.", videoUrl: "https://player.mediadelivery.net/play/718490/164d658b-d053-44cd-ade8-357898ef1bb9" },
+  { id: "lws-5", category: "LWS", name: "Cat-Camel (BWS-Fokus)", instruction: "Katze-Kuh mit bewusstem Fokus auf die Brustwirbelsäule, nicht auf die LWS.", seconds: 180, why: "Mobilisiert gezielt die Brustwirbelsäule, damit die Lendenwirbelsäule entlastet wird. Steifheit in der BWS führt sonst häufig zu ausgleichender Überbeweglichkeit im unteren Rücken.", videoUrl: "https://player.mediadelivery.net/play/718490/d32464a3-83f4-45f1-bd1b-0f8cb3c32230" },
+  { id: "schulter-1", category: "Schulter", name: "Schulter 4 Fuß Kräftigung", instruction: "Kräftigung der hinteren Schultermuskulatur aus dem Vierfüßlerstand.", seconds: 120, why: "Stärkt die hintere Schulter- und Rotatorenmanschetten-Muskulatur, die für eine stabile Schulterführung wichtig ist.", videoUrl: "https://player.mediadelivery.net/play/718490/5e64e41b-6a1b-4cb5-b633-f12a8fe9f4b5" },
+  { id: "schulter-2", category: "Schulter", name: "Kapseldehnung", instruction: "Sleeper Stretch zur Dehnung der hinteren Schulterkapsel.", seconds: 120, why: "Löst Spannungen in der hinteren Gelenkkapsel und verbessert die Innenrotation der Schulter.", videoUrl: "https://player.mediadelivery.net/play/718490/6fd15320-6e74-48e1-91a6-2d8938eeb9f5" },
 ];
 
 const GLOBAL_STYLES = `
@@ -78,6 +78,32 @@ const GLOBAL_STYLES = `
   @keyframes ps-flash { 0%, 100% { opacity: 1; } 50% { opacity: 0.25; } }
   .ps-flash { animation: ps-flash 0.5s ease-in-out 3; }
 `;
+
+function useBeep() {
+  const ctxRef = useRef(null);
+  return useCallback(() => {
+    try {
+      if (!ctxRef.current) {
+        ctxRef.current = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      const ctx = ctxRef.current;
+      if (ctx.state === "suspended") ctx.resume();
+      [0, 0.18].forEach((delay) => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.frequency.value = 880;
+        osc.type = "sine";
+        gain.gain.setValueAtTime(0.0001, ctx.currentTime + delay);
+        gain.gain.exponentialRampToValueAtTime(0.2, ctx.currentTime + delay + 0.01);
+        gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + delay + 0.15);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(ctx.currentTime + delay);
+        osc.stop(ctx.currentTime + delay + 0.16);
+      });
+    } catch (e) {}
+  }, []);
+}
 
 function useCountdown(initialSeconds, running) {
   const [secondsLeft, setSecondsLeft] = useState(initialSeconds);
@@ -234,9 +260,11 @@ export default function App() {
 
   const exercise = selectedExercises[index];
   const [secondsLeft, setSecondsLeft] = useCountdown(exercise?.seconds ?? 0, running);
+  const beep = useBeep();
 
   useEffect(() => {
     if (secondsLeft === 0 && running) {
+      beep();
       if (typeof navigator !== "undefined" && navigator.vibrate) {
         try {
           navigator.vibrate([200, 100, 200]);

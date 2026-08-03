@@ -75,6 +75,8 @@ const GLOBAL_STYLES = `
   .ps-pill.active { background: #2D5C56; color: #fff; border-color: #2D5C56; box-shadow: 0 0 0 4px rgba(45,92,86,0.18); }
   .ps-hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
   .ps-hide-scrollbar::-webkit-scrollbar { display: none; }
+  @keyframes ps-flash { 0%, 100% { opacity: 1; } 50% { opacity: 0.25; } }
+  .ps-flash { animation: ps-flash 0.5s ease-in-out 3; }
 `;
 
 function useCountdown(initialSeconds, running) {
@@ -125,10 +127,10 @@ function TimerRing({ total, secondsLeft }) {
 function VideoModal({ exerciseName, videoUrl, onClose }) {
   return (
     <div
-      className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-6"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4"
       style={{ backgroundColor: "rgba(28,43,41,0.6)", backdropFilter: "blur(4px)" }}
     >
-      <div className="w-full sm:max-w-md bg-white rounded-t-3xl sm:rounded-3xl overflow-hidden">
+      <div className="w-full max-w-md bg-white rounded-3xl overflow-hidden">
         <div className="flex items-center justify-between px-5 py-4 border-b ps-border-alt">
           <span className="ps-font-display text-lg ps-text-ink">{exerciseName}</span>
           <button onClick={onClose} aria-label="Video schließen" className="p-1.5 rounded-full ps-text-muted">
@@ -232,6 +234,16 @@ export default function App() {
 
   const exercise = selectedExercises[index];
   const [secondsLeft, setSecondsLeft] = useCountdown(exercise?.seconds ?? 0, running);
+
+  useEffect(() => {
+    if (secondsLeft === 0 && running) {
+      if (typeof navigator !== "undefined" && navigator.vibrate) {
+        try {
+          navigator.vibrate([200, 100, 200]);
+        } catch (e) {}
+      }
+    }
+  }, [secondsLeft]);
 
   const totalSelectedSeconds = selectedExercises.reduce((sum, e) => sum + e.seconds, 0);
   const totalMinutes = Math.round(totalSelectedSeconds / 60);
@@ -978,36 +990,38 @@ export default function App() {
               <div className="h-full ps-bg-primary transition-all duration-500" style={{ width: `${(index / selectedExercises.length) * 100}%` }} />
             </div>
 
-            <div className="flex items-center gap-3 mt-6">
-              <div className="w-12 h-12 rounded-2xl flex items-center justify-center shrink-0" style={{ backgroundColor: `${catInfo(exercise.category).color}1A` }}>
-                {(() => {
-                  const CIcon = catInfo(exercise.category).Icon;
-                  return <CIcon size={22} style={{ color: catInfo(exercise.category).color }} />;
-                })()}
+            <div style={{ minHeight: 190 }}>
+              <div className="flex items-center gap-3 mt-6">
+                <div className="w-12 h-12 rounded-2xl flex items-center justify-center shrink-0" style={{ backgroundColor: `${catInfo(exercise.category).color}1A` }}>
+                  {(() => {
+                    const CIcon = catInfo(exercise.category).Icon;
+                    return <CIcon size={22} style={{ color: catInfo(exercise.category).color }} />;
+                  })()}
+                </div>
+                <div>
+                  <span
+                    className="text-[11px] font-medium uppercase tracking-wide px-2 py-0.5 rounded-full"
+                    style={{ backgroundColor: `${catInfo(exercise.category).color}1A`, color: catInfo(exercise.category).color }}
+                  >
+                    {catInfo(exercise.category).full}
+                  </span>
+                  <h2 className="ps-font-display font-semibold text-2xl ps-text-ink leading-tight">
+                    {exercise.name}
+                  </h2>
+                </div>
               </div>
-              <div>
-                <span
-                  className="text-[11px] font-medium uppercase tracking-wide px-2 py-0.5 rounded-full"
-                  style={{ backgroundColor: `${catInfo(exercise.category).color}1A`, color: catInfo(exercise.category).color }}
-                >
-                  {catInfo(exercise.category).full}
-                </span>
-                <h2 className="ps-font-display font-semibold text-2xl ps-text-ink leading-tight">
-                  {exercise.name}
-                </h2>
-              </div>
-            </div>
-            <p className="text-[15px] leading-relaxed mt-3" style={{ color: "rgba(28,43,41,0.8)" }}>
-              {exercise.instruction}
-            </p>
+              <p className="text-[15px] leading-relaxed mt-3" style={{ color: "rgba(28,43,41,0.8)" }}>
+                {exercise.instruction}
+              </p>
 
-            <button
-              onClick={() => setShowWhy((v) => !v)}
-              className="mt-3 self-start flex items-center gap-1.5 text-xs font-medium ps-text-primary"
-            >
-              {showWhy ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
-              Warum diese Übung?
-            </button>
+              <button
+                onClick={() => setShowWhy((v) => !v)}
+                className="mt-3 self-start flex items-center gap-1.5 text-xs font-medium ps-text-primary"
+              >
+                {showWhy ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
+                Warum diese Übung?
+              </button>
+            </div>
             {showWhy && (
               <div className="mt-2 rounded-xl px-3.5 py-3 text-[13px] leading-relaxed" style={{ backgroundColor: `${catInfo(exercise.category).color}0D`, color: "rgba(28,43,41,0.85)" }}>
                 {exercise.why}
@@ -1015,7 +1029,7 @@ export default function App() {
             )}
 
             <div className="flex-1 flex flex-col items-center justify-center gap-6 py-4">
-              <div className="relative flex items-center justify-center">
+              <div className={`relative flex items-center justify-center ${secondsLeft === 0 ? "ps-flash" : ""}`}>
                 <TimerRing total={exercise.seconds} secondsLeft={secondsLeft} />
                 <div className="absolute flex flex-col items-center gap-1">
                   {(() => {

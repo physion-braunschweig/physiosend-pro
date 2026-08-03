@@ -23,15 +23,15 @@ export async function handler(event) {
 
     const subject = `Dein Übungsplan von ${practiceName || "deiner Praxis"}`;
     const html = `
-      <div style="font-family: Arial, sans-serif; max-width: 480px; margin: 0 auto; color: #1C2B29;">
+      <div style="font-family: Arial, sans-serif; max-width: 480px; margin: 0 auto; color: #17233D;">
         <p>Hallo ${patientName || ""},</p>
         <p>dein individueller Übungsplan steht bereit. Klicke auf den folgenden Link, um ihn zu öffnen:</p>
         <p style="margin: 24px 0;">
-          <a href="${planUrl}" style="background:#E8A33D;color:#1C2B29;padding:12px 20px;border-radius:999px;text-decoration:none;font-weight:600;display:inline-block;">
+          <a href="${planUrl}" style="background:#0E6E76;color:#ffffff;padding:12px 20px;border-radius:999px;text-decoration:none;font-weight:600;display:inline-block;">
             Übungsplan öffnen
           </a>
         </p>
-        <p style="font-size:13px;color:#5B6B67;">Falls der Button nicht funktioniert: <a href="${planUrl}" style="color:#2D5C56;">Übungsplan öffnen</a></p>
+        <p style="font-size:13px;color:#6E6E73;">Falls der Button nicht funktioniert: <a href="${planUrl}" style="color:#0E6E76;">Übungsplan öffnen</a></p>
         <p>Viele Grüße<br/>${practiceName || "Deine Praxis"}</p>
       </div>
     `;

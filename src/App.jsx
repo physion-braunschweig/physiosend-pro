@@ -30,49 +30,51 @@ const PATIENT_NAME = "Max Mustermann";
 const PLACE_AND_DATE = "Braunschweig, den 22.07.2026";
 
 const CATEGORIES = [
-  { key: "HWS", label: "HWS", full: "Halswirbelsäule", color: "#2D5C56", Icon: PersonStanding },
-  { key: "BWS", label: "BWS", full: "Brustwirbelsäule", color: "#6B9080", Icon: Wind },
-  { key: "LWS", label: "LWS", full: "Lendenwirbelsäule", color: "#E8A33D", Icon: Waves },
-  { key: "Schulter", label: "Schulter", full: "Schulter", color: "#2D5C56", Icon: RotateCw },
-  { key: "Hüfte", label: "Hüfte", full: "Hüfte", color: "#6B9080", Icon: Activity },
-  { key: "Knie", label: "Knie", full: "Knie", color: "#E8A33D", Icon: RotateCcw },
-  { key: "Fuß", label: "Fuß", full: "Fuß", color: "#2D5C56", Icon: Footprints },
+  { key: "HWS", label: "HWS", full: "Halswirbelsäule", color: "#17233D", Icon: PersonStanding },
+  { key: "BWS", label: "BWS", full: "Brustwirbelsäule", color: "#17233D", Icon: Wind },
+  { key: "LWS", label: "LWS", full: "Lendenwirbelsäule", color: "#17233D", Icon: Waves },
+  { key: "Schulter", label: "Schulter", full: "Schulter", color: "#17233D", Icon: RotateCw },
+  { key: "Hüfte", label: "Hüfte", full: "Hüfte", color: "#17233D", Icon: Activity },
+  { key: "Knie", label: "Knie", full: "Knie", color: "#17233D", Icon: RotateCcw },
+  { key: "Fuß", label: "Fuß", full: "Fuß", color: "#17233D", Icon: Footprints },
 ];
 
 function catInfo(key) {
   return CATEGORIES.find((c) => c.key === key);
 }
 
+const EXERCISE_TYPES = ["Dehnung & Mobilisation", "Kräftigung & Ansteuerung", "Atmung & Entspannung"];
+
 const EXERCISE_POOL = [
-  { id: "bws-3", category: "BWS", name: "Mobilisierung BWS aus Seitlage", instruction: "Mobilisation der Brustwirbelsäule und Rippen aus der Seitlage.", seconds: 120, why: "Verbessert die Beweglichkeit von BWS und Rippengelenken – wichtig für eine freie Atmung und eine ungehinderte Rotation des Oberkörpers.", videoUrl: "https://player.mediadelivery.net/play/718490/164d658b-d053-44cd-ade8-357898ef1bb9" },
-  { id: "lws-5", category: "LWS", name: "Cat-Camel (BWS-Fokus)", instruction: "Katze-Kuh mit bewusstem Fokus auf die Brustwirbelsäule, nicht auf die LWS.", seconds: 180, why: "Mobilisiert gezielt die Brustwirbelsäule, damit die Lendenwirbelsäule entlastet wird. Steifheit in der BWS führt sonst häufig zu ausgleichender Überbeweglichkeit im unteren Rücken.", videoUrl: "https://player.mediadelivery.net/play/718490/d32464a3-83f4-45f1-bd1b-0f8cb3c32230" },
-  { id: "schulter-1", category: "Schulter", name: "Schulter 4 Fuß Kräftigung", instruction: "Kräftigung der hinteren Schultermuskulatur aus dem Vierfüßlerstand.", seconds: 120, why: "Stärkt die hintere Schulter- und Rotatorenmanschetten-Muskulatur, die für eine stabile Schulterführung wichtig ist.", videoUrl: "https://player.mediadelivery.net/play/718490/5e64e41b-6a1b-4cb5-b633-f12a8fe9f4b5" },
-  { id: "schulter-2", category: "Schulter", name: "Kapseldehnung", instruction: "Sleeper Stretch zur Dehnung der hinteren Schulterkapsel.", seconds: 120, why: "Löst Spannungen in der hinteren Gelenkkapsel und verbessert die Innenrotation der Schulter.", videoUrl: "https://player.mediadelivery.net/play/718490/6fd15320-6e74-48e1-91a6-2d8938eeb9f5" },
+  { id: "bws-3", category: "BWS", type: "Dehnung & Mobilisation", name: "Mobilisierung BWS aus Seitlage", instruction: "Mobilisation der Brustwirbelsäule und Rippen aus der Seitlage.", seconds: 120, why: "Verbessert die Beweglichkeit von BWS und Rippengelenken – wichtig für eine freie Atmung und eine ungehinderte Rotation des Oberkörpers.", videoUrl: "https://player.mediadelivery.net/play/718490/164d658b-d053-44cd-ade8-357898ef1bb9" },
+  { id: "lws-5", category: "LWS", type: "Dehnung & Mobilisation", name: "Cat-Camel (BWS-Fokus)", instruction: "Katze-Kuh mit bewusstem Fokus auf die Brustwirbelsäule, nicht auf die LWS.", seconds: 180, why: "Mobilisiert gezielt die Brustwirbelsäule, damit die Lendenwirbelsäule entlastet wird. Steifheit in der BWS führt sonst häufig zu ausgleichender Überbeweglichkeit im unteren Rücken.", videoUrl: "https://player.mediadelivery.net/play/718490/d32464a3-83f4-45f1-bd1b-0f8cb3c32230" },
+  { id: "schulter-1", category: "Schulter", type: "Kräftigung & Ansteuerung", name: "Schulter 4 Fuß Kräftigung", instruction: "Kräftigung der hinteren Schultermuskulatur aus dem Vierfüßlerstand.", seconds: 120, why: "Stärkt die hintere Schulter- und Rotatorenmanschetten-Muskulatur, die für eine stabile Schulterführung wichtig ist.", videoUrl: "https://player.mediadelivery.net/play/718490/5e64e41b-6a1b-4cb5-b633-f12a8fe9f4b5" },
+  { id: "schulter-2", category: "Schulter", type: "Dehnung & Mobilisation", name: "Kapseldehnung", instruction: "Sleeper Stretch zur Dehnung der hinteren Schulterkapsel.", seconds: 120, why: "Löst Spannungen in der hinteren Gelenkkapsel und verbessert die Innenrotation der Schulter.", videoUrl: "https://player.mediadelivery.net/play/718490/6fd15320-6e74-48e1-91a6-2d8938eeb9f5" },
 ];
 
 const GLOBAL_STYLES = `
-  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap');
   .ps-app, .ps-app button, .ps-app input { font-family: 'Inter', sans-serif; }
-  .ps-font-display { font-family: 'Fraunces', serif; }
+  .ps-font-display { font-family: 'Oswald', sans-serif; text-transform: uppercase; letter-spacing: 0.02em; }
   .ps-font-mono { font-family: 'Space Mono', monospace; }
-  .ps-bg-primary { background-color: #2D5C56; }
-  .ps-text-primary { color: #2D5C56; }
-  .ps-border-primary { border-color: #2D5C56; }
-  .ps-bg-ink { background-color: #1C2B29; }
-  .ps-text-ink { color: #1C2B29; }
-  .ps-bg-accent { background-color: #E8A33D; }
-  .ps-text-accent { color: #E8A33D; }
-  .ps-bg-alt { background-color: #E7ECE9; }
-  .ps-border-alt { border-color: #E7ECE9; }
-  .ps-text-muted { color: #5B6B67; }
-  .ps-bg-page { background-color: #F2F4F1; }
+  .ps-bg-primary { background-color: #17233D; }
+  .ps-text-primary { color: #17233D; }
+  .ps-border-primary { border-color: #17233D; }
+  .ps-bg-ink { background-color: #17233D; }
+  .ps-text-ink { color: #17233D; }
+  .ps-bg-accent { background-color: #0E6E76; }
+  .ps-text-accent { color: #0E6E76; }
+  .ps-bg-alt { background-color: #E3E3E5; }
+  .ps-border-alt { border-color: #E3E3E5; }
+  .ps-text-muted { color: #6E6E73; }
+  .ps-bg-page { background-color: #FAFAFA; }
   .ps-press { transition: transform .15s ease; }
   .ps-press:active { transform: scale(0.97); }
-  .ps-shadow-cta { box-shadow: 0 8px 24px -6px rgba(232,163,61,0.55); }
-  .ps-btn-accent { background-color: #E8A33D; color: #1C2B29; }
-  .ps-btn-accent:disabled { background-color: #E7ECE9; color: #5B6B67; box-shadow: none; }
-  .ps-pill { background: #fff; color: #1C2B29; border: 2px solid #E7ECE9; }
-  .ps-pill.active { background: #2D5C56; color: #fff; border-color: #2D5C56; box-shadow: 0 0 0 4px rgba(45,92,86,0.18); }
+  .ps-shadow-cta { box-shadow: 0 8px 24px -6px rgba(23,35,61,0.35); }
+  .ps-btn-accent { background-color: #0E6E76; color: #fff; }
+  .ps-btn-accent:disabled { background-color: #E3E3E5; color: #6E6E73; box-shadow: none; }
+  .ps-pill { background: #fff; color: #17233D; border: 2px solid #E3E3E5; }
+  .ps-pill.active { background: #17233D; color: #fff; border-color: #17233D; box-shadow: 0 0 0 4px rgba(23,35,61,0.18); }
   .ps-hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
   .ps-hide-scrollbar::-webkit-scrollbar { display: none; }
   @keyframes ps-flash { 0%, 100% { opacity: 1; } 50% { opacity: 0.25; } }
@@ -133,13 +135,13 @@ function TimerRing({ total, secondsLeft }) {
 
   return (
     <svg width="200" height="200" viewBox="0 0 200 200" style={{ transform: "rotate(-90deg)" }}>
-      <circle cx="100" cy="100" r={radius} fill="none" stroke="#E7ECE9" strokeWidth="12" />
+      <circle cx="100" cy="100" r={radius} fill="none" stroke="#E3E3E5" strokeWidth="12" />
       <circle
         cx="100"
         cy="100"
         r={radius}
         fill="none"
-        stroke="#E8A33D"
+        stroke="#0E6E76"
         strokeWidth="12"
         strokeLinecap="round"
         strokeDasharray={circumference}
@@ -154,7 +156,7 @@ function VideoModal({ exerciseName, videoUrl, onClose }) {
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center p-4"
-      style={{ backgroundColor: "rgba(28,43,41,0.6)", backdropFilter: "blur(4px)" }}
+      style={{ backgroundColor: "rgba(23,35,61,0.6)", backdropFilter: "blur(4px)" }}
     >
       <div className="w-full max-w-md bg-white rounded-3xl overflow-hidden">
         <div className="flex items-center justify-between px-5 py-4 border-b ps-border-alt">
@@ -175,9 +177,9 @@ function VideoModal({ exerciseName, videoUrl, onClose }) {
             />
           </div>
         ) : (
-          <div className="aspect-video ps-bg-ink flex flex-col items-center justify-center gap-2" style={{ color: "#F2F4F1" }}>
+          <div className="aspect-video ps-bg-ink flex flex-col items-center justify-center gap-2" style={{ color: "#FAFAFA" }}>
             <PlayCircle size={52} strokeWidth={1.3} />
-            <span className="text-sm" style={{ color: "rgba(242,244,241,0.7)" }}>Demo-Video · {exerciseName}</span>
+            <span className="text-sm" style={{ color: "rgba(255,255,255,0.7)" }}>Demo-Video · {exerciseName}</span>
           </div>
         )}
         <div className="px-5 py-4 text-sm ps-text-muted">
@@ -191,6 +193,7 @@ function VideoModal({ exerciseName, videoUrl, onClose }) {
 export default function App() {
   const [screen, setScreen] = useState("builder"); // builder | intro | exercise | done
   const [activeCategory, setActiveCategory] = useState(CATEGORIES[0].key);
+  const [activeType, setActiveType] = useState("Alle");
   const [selectedIds, setSelectedIds] = useState([]);
   const [index, setIndex] = useState(0);
   const [running, setRunning] = useState(false);
@@ -201,7 +204,7 @@ export default function App() {
   const [patientEmail, setPatientEmail] = useState("");
   const [targetMinutes, setTargetMinutes] = useState(20);
   const [befundNotes, setBefundNotes] = useState(
-    "1. Wirbelsäule: \n2. Hüfte/Knie: \n3. Schulter: "
+    "1. Wirbelsäule: \n2. Hüfte: \n3. Schulter: \n4. Knie und Sprunggelenk: \n5. Sonstiges: "
   );
   const [startDate, setStartDate] = useState(() => new Date().toISOString().slice(0, 10));
   const [durationDays, setDurationDays] = useState(30);
@@ -256,7 +259,9 @@ export default function App() {
         })),
     [selectedIds, secondsOverrides]
   );
-  const filteredPool = EXERCISE_POOL.filter((e) => e.category === activeCategory);
+  const filteredPool = EXERCISE_POOL.filter(
+    (e) => e.category === activeCategory && (activeType === "Alle" || e.type === activeType)
+  );
 
   const exercise = selectedExercises[index];
   const [secondsLeft, setSecondsLeft] = useCountdown(exercise?.seconds ?? 0, running);
@@ -449,12 +454,12 @@ export default function App() {
       <style>{GLOBAL_STYLES}</style>
 
       <div className="w-full max-w-md min-h-screen ps-bg-page flex flex-col relative overflow-hidden">
-        <div className="pointer-events-none absolute -top-20 -right-24 w-64 h-64 rounded-full blur-3xl" style={{ backgroundColor: "rgba(45,92,86,0.1)" }} />
-        <div className="pointer-events-none absolute top-1/2 -left-28 w-56 h-56 rounded-full blur-3xl" style={{ backgroundColor: "rgba(232,163,61,0.1)" }} />
+        <div className="pointer-events-none absolute -top-20 -right-24 w-64 h-64 rounded-full blur-3xl" style={{ backgroundColor: "rgba(23,35,61,0.1)" }} />
+        <div className="pointer-events-none absolute top-1/2 -left-28 w-56 h-56 rounded-full blur-3xl" style={{ backgroundColor: "rgba(14,110,118,0.1)" }} />
 
         {screen === "builder" && !isPatientView && !isUnlocked && (
           <div className="flex-1 flex flex-col items-center justify-center px-6 text-center">
-            <div className="w-14 h-14 rounded-2xl flex items-center justify-center mb-5" style={{ backgroundColor: "rgba(45,92,86,0.1)" }}>
+            <div className="w-14 h-14 rounded-2xl flex items-center justify-center mb-5" style={{ backgroundColor: "rgba(23,35,61,0.1)" }}>
               <Lock size={24} className="ps-text-primary" />
             </div>
             <span className="text-xs tracking-wide uppercase ps-text-muted font-medium">
@@ -558,9 +563,12 @@ export default function App() {
                     <textarea
                       value={befundNotes}
                       onChange={(e) => setBefundNotes(e.target.value)}
-                      rows={4}
+                      rows={6}
                       className="w-full bg-white border ps-border-alt ps-text-ink rounded-xl px-3.5 py-2.5 text-sm focus:outline-none resize-y leading-relaxed"
                     />
+                    <p className="text-[11px] ps-text-muted mt-1">
+                      Ohne Eintrag bei einem Punkt = ohne Befund. Kürzel: E = Einschränkung Beweglichkeit, S = Schmerz, jeweils + gering / ++ mäßig / +++ massiv (z. B. "E++, S+").
+                    </p>
                     <p className="text-[11px] ps-text-muted mt-1">
                       Daraus erstellt Claude eine patientenfreundliche Zusammenfassung.
                     </p>
@@ -575,7 +583,7 @@ export default function App() {
                         <button
                           onClick={() => generateSummary(befundNotes)}
                           className="text-[11px] underline underline-offset-2"
-                          style={summaryError ? { color: "#E8A33D" } : {}}
+                          style={summaryError ? { color: "#0E6E76" } : {}}
                         >
                           {summaryError ? "Fehler, klick hier" : summary ? "Neu erstellen" : "Erstellen"}
                         </button>
@@ -588,7 +596,7 @@ export default function App() {
                         <div className="h-3 ps-bg-alt rounded-full w-3/4" />
                       </div>
                     ) : summary ? (
-                      <p className="text-sm leading-relaxed" style={{ color: "rgba(28,43,41,0.9)" }}>
+                      <p className="text-sm leading-relaxed" style={{ color: "rgba(23,35,61,0.9)" }}>
                         {summary}
                       </p>
                     ) : (
@@ -658,7 +666,7 @@ export default function App() {
                     className="h-full transition-all duration-300"
                     style={{
                       width: `${Math.min(100, (totalSelectedSeconds / targetSeconds) * 100)}%`,
-                      backgroundColor: isTimeFull ? "#E8A33D" : "#2D5C56",
+                      backgroundColor: isTimeFull ? "#0E6E76" : "#17233D",
                     }}
                   />
                 </div>
@@ -718,12 +726,15 @@ export default function App() {
                 return (
                   <button
                     key={c.key}
-                    onClick={() => setActiveCategory(c.key)}
+                    onClick={() => {
+                      setActiveCategory(c.key);
+                      setActiveType("Alle");
+                    }}
                     className="shrink-0 flex items-center gap-1.5 rounded-full px-3.5 py-2 text-sm font-medium border"
                     style={
                       active
                         ? { backgroundColor: c.color, color: "#fff", borderColor: c.color }
-                        : { backgroundColor: "#fff", color: "#1C2B29", borderColor: "#E7ECE9" }
+                        : { backgroundColor: "#fff", color: "#17233D", borderColor: "#E3E3E5" }
                     }
                   >
                     <c.Icon size={15} style={active ? { color: "#fff" } : { color: c.color }} />
@@ -749,6 +760,27 @@ export default function App() {
               <div className="text-xs ps-text-muted uppercase tracking-wide mb-1">
                 {catInfo(activeCategory).full}
               </div>
+
+              <div className="flex gap-1.5 overflow-x-auto pb-2 ps-hide-scrollbar">
+                {["Alle", ...EXERCISE_TYPES].map((t) => {
+                  const active = activeType === t;
+                  return (
+                    <button
+                      key={t}
+                      onClick={() => setActiveType(t)}
+                      className="shrink-0 rounded-full px-3 py-1.5 text-xs font-medium border"
+                      style={
+                        active
+                          ? { backgroundColor: "#17233D", color: "#fff", borderColor: "#17233D" }
+                          : { backgroundColor: "#fff", color: "#17233D", borderColor: "#E3E3E5" }
+                      }
+                    >
+                      {t}
+                    </button>
+                  );
+                })}
+              </div>
+
               {filteredPool.map((e) => {
                 const selected = selectedIds.includes(e.id);
                 const c = catInfo(e.category);
@@ -758,7 +790,7 @@ export default function App() {
                   <div
                     key={e.id}
                     className="w-full flex items-center gap-3 rounded-2xl px-4 py-3 border bg-white"
-                    style={{ borderColor: selected ? "#2D5C56" : "#E7ECE9" }}
+                    style={{ borderColor: selected ? "#17233D" : "#E3E3E5" }}
                   >
                     <button
                       onClick={() => !locked && toggleExercise(e.id)}
@@ -805,8 +837,8 @@ export default function App() {
                       className="w-6 h-6 rounded-full flex items-center justify-center border-2 shrink-0"
                       style={
                         selected
-                          ? { backgroundColor: "#2D5C56", borderColor: "#2D5C56" }
-                          : { borderColor: "#E7ECE9", opacity: locked ? 0.4 : 1 }
+                          ? { backgroundColor: "#17233D", borderColor: "#17233D" }
+                          : { borderColor: "#E3E3E5", opacity: locked ? 0.4 : 1 }
                       }
                     >
                       {selected && <Check size={14} className="text-white" />}
@@ -858,7 +890,7 @@ export default function App() {
                         onClick={sendPlanEmail}
                         disabled={emailSendStatus === "sending"}
                         className="ps-press w-full rounded-full py-3 font-medium text-sm flex items-center justify-center gap-2 mt-3"
-                        style={{ backgroundColor: "#1C2B29", color: "#fff" }}
+                        style={{ backgroundColor: "#17233D", color: "#fff" }}
                       >
                         <Mail size={16} />
                         {emailSendStatus === "sending" ? "Wird gesendet…" : "Per E-Mail an Patient senden"}
@@ -896,7 +928,7 @@ export default function App() {
               Dein Übungsplan
             </h1>
             <div className="flex items-center justify-between mt-2">
-              <span className="text-sm font-medium" style={{ color: "rgba(28,43,41,0.8)" }}>
+              <span className="text-sm font-medium" style={{ color: "rgba(23,35,61,0.8)" }}>
                 Für {patientName || "Patient/in"}
               </span>
               <span className="text-xs ps-text-muted">{PLACE_AND_DATE}</span>
@@ -908,7 +940,7 @@ export default function App() {
                   Zusammenfassung
                 </span>
                 {summary ? (
-                  <p className="text-[15px] leading-relaxed" style={{ color: "rgba(28,43,41,0.9)" }}>
+                  <p className="text-[15px] leading-relaxed" style={{ color: "rgba(23,35,61,0.9)" }}>
                     {summary}
                   </p>
                 ) : (
@@ -965,11 +997,11 @@ export default function App() {
 
                     {isOpen && (
                       <div className="px-4 pb-4">
-                        <p className="text-[13px] leading-relaxed mb-3" style={{ color: "rgba(28,43,41,0.85)" }}>
+                        <p className="text-[13px] leading-relaxed mb-3" style={{ color: "rgba(23,35,61,0.85)" }}>
                           {e.instruction}
                         </p>
                         {e.videoUrl ? (
-                          <div className="aspect-video w-full rounded-xl overflow-hidden" style={{ backgroundColor: "#1C2B29" }}>
+                          <div className="aspect-video w-full rounded-xl overflow-hidden" style={{ backgroundColor: "#17233D" }}>
                             <iframe
                               src={e.videoUrl}
                               loading="lazy"
@@ -980,9 +1012,9 @@ export default function App() {
                             />
                           </div>
                         ) : (
-                          <div className="aspect-video w-full rounded-xl overflow-hidden flex flex-col items-center justify-center gap-2" style={{ backgroundColor: "#1C2B29", color: "#F2F4F1" }}>
+                          <div className="aspect-video w-full rounded-xl overflow-hidden flex flex-col items-center justify-center gap-2" style={{ backgroundColor: "#17233D", color: "#FAFAFA" }}>
                             <PlayCircle size={40} strokeWidth={1.3} />
-                            <span className="text-xs" style={{ color: "rgba(242,244,241,0.7)" }}>Demo-Video · {e.name}</span>
+                            <span className="text-xs" style={{ color: "rgba(255,255,255,0.7)" }}>Demo-Video · {e.name}</span>
                           </div>
                         )}
                       </div>
@@ -996,7 +1028,7 @@ export default function App() {
               onClick={startPlan}
               className="ps-btn-accent ps-press ps-shadow-cta mt-5 w-full rounded-full py-4 font-semibold text-[15px] flex items-center justify-center gap-2"
             >
-              <Play size={18} fill="#1C2B29" /> Routine starten
+              <Play size={18} fill="#17233D" /> Routine starten
             </button>
           </div>
         )}
@@ -1006,10 +1038,10 @@ export default function App() {
             <div className="flex items-center justify-between text-xs ps-text-muted mb-2">
               <span>Übung {index + 1} von {selectedExercises.length}</span>
               <div className="flex items-center gap-3">
-                <button onClick={goToNext} className="underline-offset-2 hover:underline" style={{ color: "rgba(91,107,103,0.7)" }}>
+                <button onClick={goToNext} className="underline-offset-2 hover:underline" style={{ color: "rgba(110,110,115,0.7)" }}>
                   Überspringen
                 </button>
-                <button onClick={restart} className="underline-offset-2 hover:underline" style={{ color: "rgba(91,107,103,0.7)" }}>
+                <button onClick={restart} className="underline-offset-2 hover:underline" style={{ color: "rgba(110,110,115,0.7)" }}>
                   Von vorn
                 </button>
               </div>
@@ -1038,7 +1070,7 @@ export default function App() {
                   </h2>
                 </div>
               </div>
-              <p className="text-[15px] leading-relaxed mt-3" style={{ color: "rgba(28,43,41,0.8)" }}>
+              <p className="text-[15px] leading-relaxed mt-3" style={{ color: "rgba(23,35,61,0.8)" }}>
                 {exercise.instruction}
               </p>
 
@@ -1051,7 +1083,7 @@ export default function App() {
               </button>
             </div>
             {showWhy && (
-              <div className="mt-2 rounded-xl px-3.5 py-3 text-[13px] leading-relaxed" style={{ backgroundColor: `${catInfo(exercise.category).color}0D`, color: "rgba(28,43,41,0.85)" }}>
+              <div className="mt-2 rounded-xl px-3.5 py-3 text-[13px] leading-relaxed" style={{ backgroundColor: `${catInfo(exercise.category).color}0D`, color: "rgba(23,35,61,0.85)" }}>
                 {exercise.why}
               </div>
             )}
@@ -1088,7 +1120,7 @@ export default function App() {
             <button
               onClick={goToNext}
               className="ps-press w-full rounded-full py-4 font-medium text-[15px] flex items-center justify-center gap-2 border-2"
-              style={{ backgroundColor: "#fff", color: "#1C2B29", borderColor: "#1C2B29" }}
+              style={{ backgroundColor: "#fff", color: "#17233D", borderColor: "#17233D" }}
             >
               {index + 1 < selectedExercises.length ? "Weiter zur nächsten Übung" : "Plan abschließen"}
               <ArrowRight size={18} />
@@ -1099,8 +1131,8 @@ export default function App() {
         {screen === "sent" && (
           <div className="flex-1 flex flex-col items-center justify-center px-6 text-center">
             <div className="relative flex items-center justify-center">
-              <div className="absolute w-40 h-40 rounded-full" style={{ backgroundColor: "rgba(45,92,86,0.05)" }} />
-              <div className="absolute w-28 h-28 rounded-full" style={{ backgroundColor: "rgba(45,92,86,0.08)" }} />
+              <div className="absolute w-40 h-40 rounded-full" style={{ backgroundColor: "rgba(23,35,61,0.05)" }} />
+              <div className="absolute w-28 h-28 rounded-full" style={{ backgroundColor: "rgba(23,35,61,0.08)" }} />
               <CheckCircle2 size={56} className="relative ps-text-primary" strokeWidth={1.4} />
             </div>
             <h2 className="ps-font-display font-semibold text-2xl ps-text-ink mt-4">Alles verschickt!</h2>
@@ -1127,9 +1159,9 @@ export default function App() {
         {screen === "done" && (
           <div className="flex-1 flex flex-col items-center justify-center px-6 text-center">
             <div className="relative flex items-center justify-center">
-              <div className="absolute w-40 h-40 rounded-full" style={{ backgroundColor: "rgba(45,92,86,0.05)" }} />
-              <div className="absolute w-28 h-28 rounded-full" style={{ backgroundColor: "rgba(45,92,86,0.08)" }} />
-              <div className="absolute w-16 h-16 rounded-full" style={{ backgroundColor: "rgba(232,163,61,0.15)" }} />
+              <div className="absolute w-40 h-40 rounded-full" style={{ backgroundColor: "rgba(23,35,61,0.05)" }} />
+              <div className="absolute w-28 h-28 rounded-full" style={{ backgroundColor: "rgba(23,35,61,0.08)" }} />
+              <div className="absolute w-16 h-16 rounded-full" style={{ backgroundColor: "rgba(14,110,118,0.15)" }} />
               <CheckCircle2 size={56} className="relative ps-text-primary" strokeWidth={1.4} />
             </div>
             <h2 className="ps-font-display font-semibold text-2xl ps-text-ink mt-4">Geschafft!</h2>

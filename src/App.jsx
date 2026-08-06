@@ -41,6 +41,17 @@ const CATEGORIES = [
   { key: "Fuß", label: "Fuß", full: "Fuß", color: "#17233D", Icon: Footprints },
 ];
 
+const BODY_AREAS = [
+  { key: "Alle", label: "Alle", Icon: Grid2x2, regions: ["HWS", "BWS", "LWS", "Schulter", "Hüfte", "Knie", "Fuß"] },
+  { key: "Wirbelsäule", label: "Wirbelsäule", Icon: Waves, regions: ["HWS", "BWS", "LWS"] },
+  { key: "Obere Extremität", label: "Obere Extremität", Icon: RotateCw, regions: ["Schulter"] },
+  { key: "Untere Extremität", label: "Untere Extremität", Icon: Footprints, regions: ["Hüfte", "Knie", "Fuß"] },
+];
+
+function areaInfo(key) {
+  return BODY_AREAS.find((a) => a.key === key) || BODY_AREAS[0];
+}
+
 function catInfo(key) {
   return CATEGORIES.find((c) => c.key === key) || CATEGORIES[0];
 }
@@ -199,6 +210,7 @@ function VideoModal({ exerciseName, videoUrl, onClose }) {
 
 export default function App() {
   const [screen, setScreen] = useState("builder"); // builder | intro | exercise | done
+  const [activeArea, setActiveArea] = useState("Alle");
   const [activeCategory, setActiveCategory] = useState("Alle");
   const [activeType, setActiveType] = useState(EXERCISE_TYPES[0].key);
   const [activeIndications, setActiveIndications] = useState([]);
@@ -270,6 +282,7 @@ export default function App() {
   const filteredPool = EXERCISE_POOL.filter(
     (e) =>
       e.type === activeType &&
+      areaInfo(activeArea).regions.includes(e.category) &&
       (activeCategory === "Alle" || e.category === activeCategory) &&
       (activeIndications.length === 0 || activeIndications.some((ind) => e.indications?.includes(ind)))
   );
@@ -427,6 +440,7 @@ export default function App() {
     setSummaryError(null);
     setPlanLink("");
     setEmailSendStatus(null);
+    setActiveArea("Alle");
     setActiveCategory("Alle");
     setActiveType(EXERCISE_TYPES[0].key);
     setActiveIndications([]);
@@ -771,26 +785,55 @@ export default function App() {
 
             <div className="px-6 mt-3">
               <div className="flex gap-1.5 overflow-x-auto pb-1 ps-hide-scrollbar">
-                {CATEGORIES.map((c) => {
-                  const active = c.key === activeCategory;
+                {BODY_AREAS.map((a) => {
+                  const active = a.key === activeArea;
                   return (
                     <button
-                      key={c.key}
-                      onClick={() => setActiveCategory(c.key)}
-                      className="shrink-0 flex items-center gap-1 rounded-full px-2.5 py-1.5 text-xs font-medium border"
+                      key={a.key}
+                      onClick={() => {
+                        setActiveArea(a.key);
+                        setActiveCategory("Alle");
+                      }}
+                      className="shrink-0 flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium border"
                       style={
                         active
-                          ? { backgroundColor: "#0E6E76", color: "#fff", borderColor: "#0E6E76" }
+                          ? { backgroundColor: "#17233D", color: "#fff", borderColor: "#17233D" }
                           : { backgroundColor: "#fff", color: "#17233D", borderColor: "#E3E3E5" }
                       }
                     >
-                      <c.Icon size={13} style={active ? { color: "#fff" } : { color: "#6E6E73" }} />
-                      {c.label}
+                      <a.Icon size={13} style={active ? { color: "#fff" } : { color: "#6E6E73" }} />
+                      {a.label}
                     </button>
                   );
                 })}
               </div>
             </div>
+
+            {areaInfo(activeArea).regions.length > 1 && (
+              <div className="px-6 mt-2">
+                <div className="flex gap-1.5 overflow-x-auto pb-1 ps-hide-scrollbar">
+                  {["Alle", ...areaInfo(activeArea).regions].map((key) => {
+                    const c = catInfo(key);
+                    const active = key === activeCategory;
+                    return (
+                      <button
+                        key={key}
+                        onClick={() => setActiveCategory(key)}
+                        className="shrink-0 flex items-center gap-1 rounded-full px-2.5 py-1.5 text-xs font-medium border"
+                        style={
+                          active
+                            ? { backgroundColor: "#0E6E76", color: "#fff", borderColor: "#0E6E76" }
+                            : { backgroundColor: "#fff", color: "#17233D", borderColor: "#E3E3E5" }
+                        }
+                      >
+                        <c.Icon size={13} style={active ? { color: "#fff" } : { color: "#6E6E73" }} />
+                        {c.label}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
 
             <div className="px-6 mt-3">
               <div className="flex gap-1.5">
@@ -821,7 +864,7 @@ export default function App() {
 
             <div className="px-6 mt-4 flex-1 overflow-y-auto space-y-2 pb-2">
               <div className="text-xs ps-text-muted uppercase tracking-wide mb-1">
-                {activeType} · {catInfo(activeCategory).full}
+                {activeType} · {areaInfo(activeArea).label} · {catInfo(activeCategory).full}
               </div>
 
               {filteredPool.map((e) => {

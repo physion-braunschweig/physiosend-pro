@@ -24,6 +24,8 @@ import {
   LogOut,
   Plus,
   Grid2x2,
+  Move,
+  Watch,
 } from "lucide-react";
 
 const PRACTICE_NAME = "Physion Braunschweig";
@@ -36,15 +38,17 @@ const CATEGORIES = [
   { key: "BWS", label: "BWS", full: "Brustwirbelsäule", color: "#17233D", Icon: Wind },
   { key: "LWS", label: "LWS", full: "Lendenwirbelsäule", color: "#17233D", Icon: Waves },
   { key: "Schulter", label: "Schulter", full: "Schulter", color: "#17233D", Icon: RotateCw },
+  { key: "Ellenbogen", label: "Ellenbogen", full: "Ellenbogen", color: "#17233D", Icon: Move },
+  { key: "Handgelenk", label: "Handgelenk", full: "Handgelenk", color: "#17233D", Icon: Watch },
   { key: "Hüfte", label: "Hüfte", full: "Hüfte", color: "#17233D", Icon: Activity },
   { key: "Knie", label: "Knie", full: "Knie", color: "#17233D", Icon: RotateCcw },
   { key: "Fuß", label: "Fuß", full: "Fuß", color: "#17233D", Icon: Footprints },
 ];
 
 const BODY_AREAS = [
-  { key: "Alle", label: "Alle", Icon: Grid2x2, regions: ["HWS", "BWS", "LWS", "Schulter", "Hüfte", "Knie", "Fuß"] },
+  { key: "Alle", label: "Alle", Icon: Grid2x2, regions: ["HWS", "BWS", "LWS", "Schulter", "Ellenbogen", "Handgelenk", "Hüfte", "Knie", "Fuß"] },
   { key: "Wirbelsäule", label: "Wirbelsäule", Icon: Waves, regions: ["HWS", "BWS", "LWS"] },
-  { key: "Obere Extremität", label: "Obere Extremität", Icon: RotateCw, regions: ["Schulter"] },
+  { key: "Obere Extremität", label: "Obere Extremität", Icon: RotateCw, regions: ["Schulter", "Ellenbogen", "Handgelenk"] },
   { key: "Untere Extremität", label: "Untere Extremität", Icon: Footprints, regions: ["Hüfte", "Knie", "Fuß"] },
 ];
 
@@ -242,7 +246,7 @@ export default function App() {
   const [pwChecking, setPwChecking] = useState(false);
   const [emailSendStatus, setEmailSendStatus] = useState(null); // null | "sending" | "sent" | "error"
   const [secondsOverrides, setSecondsOverrides] = useState(() =>
-    Object.fromEntries(EXERCISE_POOL.map((e) => [e.id, 120]))
+    Object.fromEntries(EXERCISE_POOL.map((e) => [e.id, 60]))
   );
 
   // Beim ersten Laden prüfen, ob die URL einen codierten Plan enthält (Patienten-Link).
@@ -430,7 +434,7 @@ export default function App() {
 
   function startNewPlan() {
     setSelectedIds([]);
-    setSecondsOverrides(Object.fromEntries(EXERCISE_POOL.map((e) => [e.id, 120])));
+    setSecondsOverrides(Object.fromEntries(EXERCISE_POOL.map((e) => [e.id, 60])));
     setPatientName(PATIENT_NAME);
     setPatientEmail("");
     setBefundNotes(

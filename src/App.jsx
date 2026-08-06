@@ -23,6 +23,7 @@ import {
   Lock,
   LogOut,
   Plus,
+  Grid2x2,
 } from "lucide-react";
 
 const PRACTICE_NAME = "Physion Braunschweig";
@@ -30,6 +31,7 @@ const PATIENT_NAME = "Max Mustermann";
 const PLACE_AND_DATE = "Braunschweig, den 22.07.2026";
 
 const CATEGORIES = [
+  { key: "Alle", label: "Alle", full: "Alle Regionen", color: "#17233D", Icon: Grid2x2 },
   { key: "HWS", label: "HWS", full: "Halswirbelsäule", color: "#17233D", Icon: PersonStanding },
   { key: "BWS", label: "BWS", full: "Brustwirbelsäule", color: "#17233D", Icon: Wind },
   { key: "LWS", label: "LWS", full: "Lendenwirbelsäule", color: "#17233D", Icon: Waves },
@@ -40,16 +42,21 @@ const CATEGORIES = [
 ];
 
 function catInfo(key) {
-  return CATEGORIES.find((c) => c.key === key);
+  return CATEGORIES.find((c) => c.key === key) || CATEGORIES[0];
 }
 
-const EXERCISE_TYPES = ["Dehnung & Mobilisation", "Kräftigung & Ansteuerung", "Atmung & Entspannung"];
+const EXERCISE_TYPES = [
+  { key: "Dehnung & Mobilisation", Icon: Waves },
+  { key: "Kräftigung & Ansteuerung", Icon: Activity },
+  { key: "Atmung & Entspannung", Icon: Wind },
+];
+const INDICATIONS = ["Prävention", "Akutschmerz"];
 
 const EXERCISE_POOL = [
-  { id: "bws-3", category: "BWS", type: "Dehnung & Mobilisation", name: "Mobilisierung BWS aus Seitlage", instruction: "Mobilisation der Brustwirbelsäule und Rippen aus der Seitlage.", seconds: 120, why: "Verbessert die Beweglichkeit von BWS und Rippengelenken – wichtig für eine freie Atmung und eine ungehinderte Rotation des Oberkörpers.", videoUrl: "https://player.mediadelivery.net/play/718490/164d658b-d053-44cd-ade8-357898ef1bb9" },
-  { id: "lws-5", category: "LWS", type: "Dehnung & Mobilisation", name: "Cat-Camel (BWS-Fokus)", instruction: "Katze-Kuh mit bewusstem Fokus auf die Brustwirbelsäule, nicht auf die LWS.", seconds: 180, why: "Mobilisiert gezielt die Brustwirbelsäule, damit die Lendenwirbelsäule entlastet wird. Steifheit in der BWS führt sonst häufig zu ausgleichender Überbeweglichkeit im unteren Rücken.", videoUrl: "https://player.mediadelivery.net/play/718490/d32464a3-83f4-45f1-bd1b-0f8cb3c32230" },
-  { id: "schulter-1", category: "Schulter", type: "Kräftigung & Ansteuerung", name: "Schulter 4 Fuß Kräftigung", instruction: "Kräftigung der hinteren Schultermuskulatur aus dem Vierfüßlerstand.", seconds: 120, why: "Stärkt die hintere Schulter- und Rotatorenmanschetten-Muskulatur, die für eine stabile Schulterführung wichtig ist.", videoUrl: "https://player.mediadelivery.net/play/718490/5e64e41b-6a1b-4cb5-b633-f12a8fe9f4b5" },
-  { id: "schulter-2", category: "Schulter", type: "Dehnung & Mobilisation", name: "Kapseldehnung", instruction: "Sleeper Stretch zur Dehnung der hinteren Schulterkapsel.", seconds: 120, why: "Löst Spannungen in der hinteren Gelenkkapsel und verbessert die Innenrotation der Schulter.", videoUrl: "https://player.mediadelivery.net/play/718490/6fd15320-6e74-48e1-91a6-2d8938eeb9f5" },
+  { id: "bws-3", category: "BWS", type: "Dehnung & Mobilisation", indications: ["Prävention"], name: "Mobilisierung BWS aus Seitlage", instruction: "Mobilisation der Brustwirbelsäule und Rippen aus der Seitlage.", seconds: 120, why: "Verbessert die Beweglichkeit von BWS und Rippengelenken – wichtig für eine freie Atmung und eine ungehinderte Rotation des Oberkörpers.", videoUrl: "https://player.mediadelivery.net/play/718490/164d658b-d053-44cd-ade8-357898ef1bb9" },
+  { id: "lws-5", category: "LWS", type: "Dehnung & Mobilisation", indications: ["Prävention"], name: "Cat-Camel (BWS-Fokus)", instruction: "Katze-Kuh mit bewusstem Fokus auf die Brustwirbelsäule, nicht auf die LWS.", seconds: 180, why: "Mobilisiert gezielt die Brustwirbelsäule, damit die Lendenwirbelsäule entlastet wird. Steifheit in der BWS führt sonst häufig zu ausgleichender Überbeweglichkeit im unteren Rücken.", videoUrl: "https://player.mediadelivery.net/play/718490/d32464a3-83f4-45f1-bd1b-0f8cb3c32230" },
+  { id: "schulter-1", category: "Schulter", type: "Kräftigung & Ansteuerung", indications: ["Prävention"], name: "Schulter 4 Fuß Kräftigung", instruction: "Kräftigung der hinteren Schultermuskulatur aus dem Vierfüßlerstand.", seconds: 120, why: "Stärkt die hintere Schulter- und Rotatorenmanschetten-Muskulatur, die für eine stabile Schulterführung wichtig ist.", videoUrl: "https://player.mediadelivery.net/play/718490/5e64e41b-6a1b-4cb5-b633-f12a8fe9f4b5" },
+  { id: "schulter-2", category: "Schulter", type: "Dehnung & Mobilisation", indications: ["Prävention", "Akutschmerz"], name: "Kapseldehnung", instruction: "Sleeper Stretch zur Dehnung der hinteren Schulterkapsel.", seconds: 120, why: "Löst Spannungen in der hinteren Gelenkkapsel und verbessert die Innenrotation der Schulter.", videoUrl: "https://player.mediadelivery.net/play/718490/6fd15320-6e74-48e1-91a6-2d8938eeb9f5" },
 ];
 
 const GLOBAL_STYLES = `
@@ -192,8 +199,9 @@ function VideoModal({ exerciseName, videoUrl, onClose }) {
 
 export default function App() {
   const [screen, setScreen] = useState("builder"); // builder | intro | exercise | done
-  const [activeCategory, setActiveCategory] = useState(CATEGORIES[0].key);
-  const [activeType, setActiveType] = useState("Alle");
+  const [activeCategory, setActiveCategory] = useState("Alle");
+  const [activeType, setActiveType] = useState(EXERCISE_TYPES[0].key);
+  const [activeIndications, setActiveIndications] = useState([]);
   const [selectedIds, setSelectedIds] = useState([]);
   const [index, setIndex] = useState(0);
   const [running, setRunning] = useState(false);
@@ -260,7 +268,10 @@ export default function App() {
     [selectedIds, secondsOverrides]
   );
   const filteredPool = EXERCISE_POOL.filter(
-    (e) => e.category === activeCategory && (activeType === "Alle" || e.type === activeType)
+    (e) =>
+      e.type === activeType &&
+      (activeCategory === "Alle" || e.category === activeCategory) &&
+      (activeIndications.length === 0 || activeIndications.some((ind) => e.indications?.includes(ind)))
   );
 
   const exercise = selectedExercises[index];
@@ -416,7 +427,9 @@ export default function App() {
     setSummaryError(null);
     setPlanLink("");
     setEmailSendStatus(null);
-    setActiveCategory(CATEGORIES[0].key);
+    setActiveCategory("Alle");
+    setActiveType(EXERCISE_TYPES[0].key);
+    setActiveIndications([]);
     setScreen("builder");
   }
 
@@ -718,37 +731,37 @@ export default function App() {
             </div>
 
             <div className="flex gap-2 overflow-x-auto px-6 mt-5 pb-1 ps-hide-scrollbar">
-              {CATEGORIES.map((c) => {
-                const active = c.key === activeCategory;
-                const countInCat = EXERCISE_POOL.filter(
-                  (e) => e.category === c.key && selectedIds.includes(e.id)
+              {EXERCISE_TYPES.map((t) => {
+                const active = t.key === activeType;
+                const countInType = EXERCISE_POOL.filter(
+                  (e) => e.type === t.key && selectedIds.includes(e.id)
                 ).length;
                 return (
                   <button
-                    key={c.key}
+                    key={t.key}
                     onClick={() => {
-                      setActiveCategory(c.key);
-                      setActiveType("Alle");
+                      setActiveType(t.key);
+                      setActiveCategory("Alle");
                     }}
                     className="shrink-0 flex items-center gap-1.5 rounded-full px-3.5 py-2 text-sm font-medium border"
                     style={
                       active
-                        ? { backgroundColor: c.color, color: "#fff", borderColor: c.color }
+                        ? { backgroundColor: "#17233D", color: "#fff", borderColor: "#17233D" }
                         : { backgroundColor: "#fff", color: "#17233D", borderColor: "#E3E3E5" }
                     }
                   >
-                    <c.Icon size={15} style={active ? { color: "#fff" } : { color: c.color }} />
-                    {c.label}
-                    {countInCat > 0 && (
+                    <t.Icon size={15} style={active ? { color: "#fff" } : { color: "#17233D" }} />
+                    {t.key}
+                    {countInType > 0 && (
                       <span
                         className="ml-0.5 rounded-full text-[11px] w-4 h-4 flex items-center justify-center"
                         style={
                           active
                             ? { backgroundColor: "rgba(255,255,255,0.25)", color: "#fff" }
-                            : { backgroundColor: `${c.color}1A`, color: c.color }
+                            : { backgroundColor: "#17233D1A", color: "#17233D" }
                         }
                       >
-                        {countInCat}
+                        {countInType}
                       </span>
                     )}
                   </button>
@@ -756,29 +769,59 @@ export default function App() {
               })}
             </div>
 
-            <div className="px-6 mt-4 flex-1 overflow-y-auto space-y-2 pb-2">
-              <div className="text-xs ps-text-muted uppercase tracking-wide mb-1">
-                {catInfo(activeCategory).full}
-              </div>
-
-              <div className="flex gap-1.5 overflow-x-auto pb-2 ps-hide-scrollbar">
-                {["Alle", ...EXERCISE_TYPES].map((t) => {
-                  const active = activeType === t;
+            <div className="px-6 mt-3">
+              <div className="flex gap-1.5 overflow-x-auto pb-1 ps-hide-scrollbar">
+                {CATEGORIES.map((c) => {
+                  const active = c.key === activeCategory;
                   return (
                     <button
-                      key={t}
-                      onClick={() => setActiveType(t)}
-                      className="shrink-0 rounded-full px-3 py-1.5 text-xs font-medium border"
+                      key={c.key}
+                      onClick={() => setActiveCategory(c.key)}
+                      className="shrink-0 flex items-center gap-1 rounded-full px-2.5 py-1.5 text-xs font-medium border"
                       style={
                         active
-                          ? { backgroundColor: "#17233D", color: "#fff", borderColor: "#17233D" }
+                          ? { backgroundColor: "#0E6E76", color: "#fff", borderColor: "#0E6E76" }
                           : { backgroundColor: "#fff", color: "#17233D", borderColor: "#E3E3E5" }
                       }
                     >
-                      {t}
+                      <c.Icon size={13} style={active ? { color: "#fff" } : { color: "#6E6E73" }} />
+                      {c.label}
                     </button>
                   );
                 })}
+              </div>
+            </div>
+
+            <div className="px-6 mt-3">
+              <div className="flex gap-1.5">
+                {INDICATIONS.map((ind) => {
+                  const active = activeIndications.includes(ind);
+                  return (
+                    <button
+                      key={ind}
+                      onClick={() =>
+                        setActiveIndications((prev) =>
+                          prev.includes(ind) ? prev.filter((x) => x !== ind) : [...prev, ind]
+                        )
+                      }
+                      className="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-medium border"
+                      style={
+                        active
+                          ? { backgroundColor: "#17233D0D", color: "#17233D", borderColor: "#17233D" }
+                          : { backgroundColor: "#fff", color: "#6E6E73", borderColor: "#E3E3E5" }
+                      }
+                    >
+                      {active && <Check size={12} />}
+                      {ind}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            <div className="px-6 mt-4 flex-1 overflow-y-auto space-y-2 pb-2">
+              <div className="text-xs ps-text-muted uppercase tracking-wide mb-1">
+                {activeType} · {catInfo(activeCategory).full}
               </div>
 
               {filteredPool.map((e) => {

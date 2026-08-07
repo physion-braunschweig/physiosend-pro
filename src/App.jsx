@@ -101,6 +101,8 @@ const GLOBAL_STYLES = `
   .ps-hide-scrollbar::-webkit-scrollbar { display: none; }
   @keyframes ps-flash { 0%, 100% { opacity: 1; } 50% { opacity: 0.25; } }
   .ps-flash { animation: ps-flash 0.5s ease-in-out 3; }
+  @keyframes ps-confetti { 0% { transform: translate(0,0) rotate(0deg); opacity: 1; } 75% { opacity: 1; } 100% { transform: translate(var(--dx), var(--dy)) rotate(var(--rot)); opacity: 0; } }
+  .ps-confetti-piece { position: absolute; bottom: 12%; left: 50%; animation-name: ps-confetti; animation-timing-function: cubic-bezier(0.2, 0.7, 0.3, 1); animation-fill-mode: forwards; }
 `;
 
 function useBeep() {
@@ -214,7 +216,7 @@ function VideoModal({ exerciseName, videoUrl, onClose }) {
 
 export default function App() {
   const [screen, setScreen] = useState("builder"); // builder | intro | exercise | done
-  const [activeArea, setActiveArea] = useState("Alle");
+  const [activeArea, setActiveArea] = useState(null);
   const [activeCategory, setActiveCategory] = useState("Alle");
   const [activeType, setActiveType] = useState(EXERCISE_TYPES[0].key);
   const [activeIndications, setActiveIndications] = useState([]);
@@ -222,6 +224,8 @@ export default function App() {
   const [index, setIndex] = useState(0);
   const [running, setRunning] = useState(false);
   const [showVideo, setShowVideo] = useState(false);
+  const [wasRunningBeforeVideo, setWasRunningBeforeVideo] = useState(false);
+  const [confettiPieces, setConfettiPieces] = useState([]);
   const [showWhy, setShowWhy] = useState(false);
   const [expandedPreviewId, setExpandedPreviewId] = useState(null);
   const [patientName, setPatientName] = useState(PATIENT_NAME);
@@ -248,6 +252,32 @@ export default function App() {
   const [secondsOverrides, setSecondsOverrides] = useState(() =>
     Object.fromEntries(EXERCISE_POOL.map((e) => [e.id, 60]))
   );
+
+  useEffect(() => {
+    if (screen === "done") {
+      const colors = ["#0E6E76", "#17233D", "#E3E3E5", "#ffffff"];
+      const pieces = Array.from({ length: 28 }).map((_, i) => {
+        const angle = (Math.PI / 180) * (250 + Math.random() * 40); // ca. nach oben, leicht gestreut
+        const distance = 90 + Math.random() * 160;
+        const dx = Math.cos(angle) * distance;
+        const dy = Math.sin(angle) * distance;
+        return {
+          id: i,
+          color: colors[i % colors.length],
+          dx,
+          dy,
+          rot: Math.round(Math.random() * 720 - 360),
+          delay: Math.random() * 150,
+          duration: 700 + Math.random() * 500,
+          offsetX: Math.random() * 60 - 30,
+          size: 5 + Math.random() * 5,
+        };
+      });
+      setConfettiPieces(pieces);
+      const t = setTimeout(() => setConfettiPieces([]), 1800);
+      return () => clearTimeout(t);
+    }
+  }, [screen]);
 
   // Beim ersten Laden prüfen, ob die URL einen codierten Plan enthält (Patienten-Link).
   useEffect(() => {
@@ -283,13 +313,15 @@ export default function App() {
         })),
     [selectedIds, secondsOverrides]
   );
-  const filteredPool = EXERCISE_POOL.filter(
-    (e) =>
-      e.type === activeType &&
-      areaInfo(activeArea).regions.includes(e.category) &&
-      (activeCategory === "Alle" || e.category === activeCategory) &&
-      (activeIndications.length === 0 || activeIndications.some((ind) => e.indications?.includes(ind)))
-  );
+  const filteredPool = !activeArea
+    ? []
+    : EXERCISE_POOL.filter(
+        (e) =>
+          e.type === activeType &&
+          areaInfo(activeArea).regions.includes(e.category) &&
+          (activeCategory === "Alle" || e.category === activeCategory) &&
+          (activeIndications.length === 0 || activeIndications.some((ind) => e.indications?.includes(ind)))
+      );
 
   const exercise = selectedExercises[index];
   const [secondsLeft, setSecondsLeft] = useCountdown(exercise?.seconds ?? 0, running);
@@ -444,7 +476,7 @@ export default function App() {
     setSummaryError(null);
     setPlanLink("");
     setEmailSendStatus(null);
-    setActiveArea("Alle");
+    setActiveArea(null);
     setActiveCategory("Alle");
     setActiveType(EXERCISE_TYPES[0].key);
     setActiveIndications([]);
@@ -484,7 +516,7 @@ export default function App() {
     <div className="ps-app min-h-screen w-full ps-bg-page flex justify-center">
       <style>{GLOBAL_STYLES}</style>
 
-      <div className="w-full max-w-md min-h-screen ps-bg-page flex flex-col relative overflow-hidden">
+      <div className="w-full max-w-md min-h-screen ps-bg-page flex flex-col relative overflow-hidden" style={{ paddingBottom: "env(safe-area-inset-bottom)" }}>
         <div className="pointer-events-none absolute -top-20 -right-24 w-64 h-64 rounded-full blur-3xl" style={{ backgroundColor: "rgba(23,35,61,0.1)" }} />
         <div className="pointer-events-none absolute top-1/2 -left-28 w-56 h-56 rounded-full blur-3xl" style={{ backgroundColor: "rgba(14,110,118,0.1)" }} />
 
@@ -759,6 +791,7 @@ export default function App() {
                     key={t.key}
                     onClick={() => {
                       setActiveType(t.key);
+                      setActiveArea(null);
                       setActiveCategory("Alle");
                     }}
                     className="shrink-0 flex items-center gap-1.5 rounded-full px-3.5 py-2 text-sm font-medium border"
@@ -789,7 +822,7 @@ export default function App() {
 
             <div className="px-6 mt-3">
               <div className="flex gap-1.5 overflow-x-auto pb-1 ps-hide-scrollbar">
-                {BODY_AREAS.map((a) => {
+                {BODY_AREAS.filter((a) => a.key !== "Alle").map((a) => {
                   const active = a.key === activeArea;
                   return (
                     <button
@@ -813,7 +846,7 @@ export default function App() {
               </div>
             </div>
 
-            {areaInfo(activeArea).regions.length > 1 && (
+            {activeArea && areaInfo(activeArea).regions.length > 1 && (
               <div className="px-6 mt-2">
                 <div className="flex gap-1.5 overflow-x-auto pb-1 ps-hide-scrollbar">
                   {["Alle", ...areaInfo(activeArea).regions].map((key) => {
@@ -867,9 +900,15 @@ export default function App() {
             </div>
 
             <div className="px-6 mt-4 flex-1 overflow-y-auto space-y-2 pb-2">
-              <div className="text-xs ps-text-muted uppercase tracking-wide mb-1">
-                {activeType} · {areaInfo(activeArea).label} · {catInfo(activeCategory).full}
-              </div>
+              {!activeArea ? (
+                <p className="text-sm ps-text-muted italic mt-2">
+                  Bitte zuerst einen Körperbereich wählen.
+                </p>
+              ) : (
+                <div className="text-xs ps-text-muted uppercase tracking-wide mb-1">
+                  {activeType} · {areaInfo(activeArea).label} · {catInfo(activeCategory).full}
+                </div>
+              )}
 
               {filteredPool.map((e) => {
                 const selected = selectedIds.includes(e.id);
@@ -1124,7 +1163,7 @@ export default function App() {
         )}
 
         {screen === "exercise" && exercise && (
-          <div className="flex-1 flex flex-col px-6 pt-8 pb-8">
+          <div className="flex-1 flex flex-col px-6 pt-8 pb-10">
             <div className="flex items-center justify-between text-xs ps-text-muted mb-2">
               <span>Übung {index + 1} von {selectedExercises.length}</span>
               <div className="flex items-center gap-3">
@@ -1200,7 +1239,11 @@ export default function App() {
               </button>
 
               <button
-                onClick={() => setShowVideo(true)}
+                onClick={() => {
+                  setWasRunningBeforeVideo(running);
+                  setRunning(false);
+                  setShowVideo(true);
+                }}
                 className="text-sm ps-text-primary underline underline-offset-4"
               >
                 Übung noch einmal ansehen
@@ -1247,7 +1290,24 @@ export default function App() {
         )}
 
         {screen === "done" && (
-          <div className="flex-1 flex flex-col items-center justify-center px-6 text-center">
+          <div className="flex-1 flex flex-col items-center justify-center px-6 text-center relative overflow-hidden">
+            {confettiPieces.map((p) => (
+              <span
+                key={p.id}
+                className="ps-confetti-piece"
+                style={{
+                  width: p.size,
+                  height: p.size * 1.8,
+                  backgroundColor: p.color,
+                  marginLeft: p.offsetX,
+                  animationDuration: `${p.duration}ms`,
+                  animationDelay: `${p.delay}ms`,
+                  "--dx": `${p.dx}px`,
+                  "--dy": `${p.dy}px`,
+                  "--rot": `${p.rot}deg`,
+                }}
+              />
+            ))}
             <div className="relative flex items-center justify-center">
               <div className="absolute w-40 h-40 rounded-full" style={{ backgroundColor: "rgba(23,35,61,0.05)" }} />
               <div className="absolute w-28 h-28 rounded-full" style={{ backgroundColor: "rgba(23,35,61,0.08)" }} />
@@ -1265,7 +1325,16 @@ export default function App() {
           </div>
         )}
 
-        {showVideo && <VideoModal exerciseName={exercise?.name ?? ""} videoUrl={exercise?.videoUrl} onClose={() => setShowVideo(false)} />}
+        {showVideo && (
+          <VideoModal
+            exerciseName={exercise?.name ?? ""}
+            videoUrl={exercise?.videoUrl}
+            onClose={() => {
+              setShowVideo(false);
+              if (wasRunningBeforeVideo) setRunning(true);
+            }}
+          />
+        )}
       </div>
     </div>
   );

@@ -255,7 +255,7 @@ export default function App() {
 
   useEffect(() => {
     if (screen === "done") {
-      const colors = ["#0E6E76", "#17233D", "#E3E3E5", "#ffffff"];
+      const colors = ["#0E6E76", "#17233D", "#C9A227", "#6E6E73"];
       const pieces = Array.from({ length: 28 }).map((_, i) => {
         const angle = (Math.PI / 180) * (250 + Math.random() * 40); // ca. nach oben, leicht gestreut
         const distance = 90 + Math.random() * 160;
@@ -829,7 +829,7 @@ export default function App() {
                       key={a.key}
                       onClick={() => {
                         setActiveArea(a.key);
-                        setActiveCategory("Alle");
+                        setActiveCategory(a.regions[0]);
                       }}
                       className="shrink-0 flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium border"
                       style={
@@ -849,7 +849,7 @@ export default function App() {
             {activeArea && areaInfo(activeArea).regions.length > 1 && (
               <div className="px-6 mt-2">
                 <div className="flex gap-1.5 overflow-x-auto pb-1 ps-hide-scrollbar">
-                  {["Alle", ...areaInfo(activeArea).regions].map((key) => {
+                  {areaInfo(activeArea).regions.map((key) => {
                     const c = catInfo(key);
                     const active = key === activeCategory;
                     return (
@@ -1240,8 +1240,10 @@ export default function App() {
 
               <button
                 onClick={() => {
-                  setWasRunningBeforeVideo(running);
-                  setRunning(false);
+                  setRunning((r) => {
+                    setWasRunningBeforeVideo(r);
+                    return false;
+                  });
                   setShowVideo(true);
                 }}
                 className="text-sm ps-text-primary underline underline-offset-4"
@@ -1302,6 +1304,7 @@ export default function App() {
                   marginLeft: p.offsetX,
                   animationDuration: `${p.duration}ms`,
                   animationDelay: `${p.delay}ms`,
+                  zIndex: 20,
                   "--dx": `${p.dx}px`,
                   "--dy": `${p.dy}px`,
                   "--rot": `${p.rot}deg`,
